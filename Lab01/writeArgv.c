@@ -16,5 +16,8 @@
 int main(int argc, const char* argv[])
 {
 	printf("Hallo World\n");
+	char text2[] = {'a', 'h', 'o', 'j', '\0'};
+	char* text = "ahoj";
+	printf("%s", text);
 }
 
