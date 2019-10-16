@@ -1,0 +1,23 @@
+a
+
+
+Po jednom
+	gcc _.c -c 
+
+gcc -shared -fpic lib_.so *.o
+
+gcc -L. -lmin main.o -Xlinker -rpath=$(pwd)
+	//-L:	knihovny se nachází někde
+	//-lmin	reprezentuje libmin.so
+			automaticky doplní lib_.so
+
+./a.out je výsledek
+
+readelf -d file
+	/ukáže dynamickou část binárky
+
+nm file
+	vypíše exportované symboly
+
+ldd file
+	vypíše závislosti binárky a vypíše, kde je hledá
