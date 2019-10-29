@@ -8,7 +8,7 @@ gcc -shared -fpic lib_.so *.o
 
 gcc -L. -lmin main.o -Xlinker -rpath=$(pwd)
 	//-L:	knihovny se nachází někde
-	//-lmin	reprezentuje libmin.so
+		//-l_:	reprezentuje libmin.so
 			automaticky doplní lib_.so
 
 ./a.out je výsledek
