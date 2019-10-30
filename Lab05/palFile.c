@@ -12,7 +12,7 @@
 
 
 bool IsPalidrome(int fd);
-int ReadOpts(int argc, char const *argv[]);
+void ReadOpts(int argc, char const *argv[]);
 __off_t GetSize(int fd);
 
 
@@ -42,8 +42,8 @@ bool IsPalidrome(int fd)
 
     char* l;
     char *r;
-    MALLOC(l, sizeof(char));
-    MALLOC(r, sizeof(char));
+    MALLOC(l, 1);
+    MALLOC(r, 1);
 
     for(int i = 0; i < size / 2 + 1; i++)
     {
@@ -58,7 +58,7 @@ bool IsPalidrome(int fd)
     return true;
 }
 
-int ReadOpts(int argc, char const *argv[]) 
+void ReadOpts(int argc, char const *argv[]) 
 {
     int opt;
     while ((opt = getopt(argc, argv, "i")) != -1) 
