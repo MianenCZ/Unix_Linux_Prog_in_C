@@ -1,0 +1,185 @@
+/* Predefines */
+%{
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/queue.h>
+#include <string.h>
+#include <stdbool.h>
+#include "getcmd.h"
+#include "types.h"
+#include "memory.h"
+#include "debug.h"
+
+
+
+struct arg
+{
+    char* s;
+    // This macro does the magic to point to other nextarg
+    TAILQ_ENTRY(arg) nextarg;
+};
+
+struct cmd
+{
+    command* value;
+    // This macro does the magic to point to other nextarg
+    TAILQ_ENTRY(cmd) nextcmd;
+};
+
+
+TAILQ_HEAD(args, arg) args;
+TAILQ_HEAD(cmds, cmd) cmds;
+int argcount = 0;
+int cmdcount = 0;
+bool dirty = false;
+
+
+%}
+
+%%
+
+#.* { //Comment
+    S_PRINTF("Comment: %s\n", yytext);
+
+}
+(\ |\t)+ { 
+    I_PRINTF("WhiteChars: /%s/\n", yytext);
+}
+;|(>>)|<|>|\| { //Deliminer
+    I_PRINTF("Delim %s\n", yytext);
+    S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
+    AddCmd(yytext[0]);
+}
+\"((\\\")|[^"\n\r])+\" { //Basic keyword
+    // AddArg(yytext);
+    S_PRINTF("\"MATCH\": %s\n", yytext);
+    char * text = NULL;
+    MALLOC(text, (sizeof(yytext) - 2));
+    strncpy(text, (yytext + 1), sizeof(yytext) - 2);
+    S_PRINTF("MATCH: %s\n", text);
+    AddArg(text);
+    free(text);
+}
+[^ "\t\n\r]+ { //Basic keyword
+    AddArg(yytext);
+}
+\n { //End of entry
+    S_PRINTF("NewLine\n");
+    S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
+    if(dirty)
+    {
+        AddCmd('\n');
+    }
+}
+. { 
+    E_PRINTF("Unknown character:'%s'\n", yytext);
+}
+%%
+
+command** GetCommands(char* Line)
+{
+    // Initialize the args before use
+    TAILQ_INIT(&args);
+    TAILQ_INIT(&cmds);
+
+    yy_scan_string(Line);
+    yylex();
+    return GetCMD();
+}
+
+void AddCmd(char delim)
+{   
+    char** arg_vals = NULL;
+    MALLOC(arg_vals, argcount + 1);
+    
+    struct arg * e = NULL;
+    // print the queue
+    int i = 0;
+    TAILQ_FOREACH(e, &args, nextarg)
+    {
+        S_PRINTF("res: %s\n", e->s);
+        *(arg_vals + i) =  e->s;
+        i++;
+    }
+    *(arg_vals + argcount) =  NULL;
+
+    // free the elements from the queue
+    while (!TAILQ_EMPTY(&args))
+    {
+        e = TAILQ_FIRST(&args);
+        TAILQ_REMOVE(&args, e, nextarg);
+        free(e);
+        e = NULL;
+    }
+
+    command* c = NULL;
+    MALLOC(c,1);
+    c->args = arg_vals;
+    c->delim = delim;
+
+    struct cmd* cm = NULL;
+    MALLOC(cm,1);
+    cm->value = c;
+    TAILQ_INSERT_TAIL(&cmds, cm, nextcmd);
+
+
+    argcount = 0;
+    dirty = false;
+    cmdcount++;
+}
+
+void AddArg(char * text)
+{
+    dirty = true;
+    struct arg * e = NULL;
+    MALLOC(e,1);
+    // e = malloc(sizeof(struct arg));
+    // if (e == NULL)
+    // {
+    //     fprintf(stderr, "malloc failed");
+    //     exit(EXIT_FAILURE);
+    // }
+
+    char* copy = NULL;
+    size_t len = strlen(text);
+    MALLOC(copy, len + 1);
+    strncpy(copy, text, len);
+    copy[len] = '\0';
+    
+
+    e->s = copy;
+    // Actually insert the arg e into the queue at the end
+    TAILQ_INSERT_TAIL(&args, e, nextarg);
+    e = NULL;
+    
+    argcount++;
+
+}
+
+command** GetCMD()
+{
+    command ** result = NULL;
+    MALLOC(result,cmdcount + 1);
+
+    struct cmd* c = NULL;  
+    int i = 0; 
+    TAILQ_FOREACH(c, &cmds, nextcmd)
+    {
+        S_PRINTF("getcmd: %s\n", *((c->value)->args));
+        *(result + i) = (c->value);
+        i++;
+    }
+    *(result + cmdcount ) = NULL;
+
+    // free the elements from the queue
+    while (!TAILQ_EMPTY(&cmds))
+    {
+        c = TAILQ_FIRST(&cmds);
+        TAILQ_REMOVE(&cmds, c, nextcmd);
+        free(c);
+        c = NULL;
+    }
+    return result;
+
+}
