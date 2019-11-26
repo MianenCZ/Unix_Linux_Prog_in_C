@@ -61,8 +61,9 @@ bool dirty = false;
     AddArg(text);
     free(text);
 }
-[^ "\t\n\r]+ { //Basic keyword
+([^ "\t\n\r><;\|])+ { //Basic keyword
     AddArg(yytext);
+    //"
 }
 \n { //End of entry
     S_PRINTF("NewLine\n");
@@ -79,12 +80,18 @@ bool dirty = false;
 
 command** GetCommands(char* Line)
 {
+    S_PRINTF("GetCommands(%s)\n", Line);
     // Initialize the args before use
     TAILQ_INIT(&args);
     TAILQ_INIT(&cmds);
 
     yy_scan_string(Line);
     yylex();
+    D_PRINTF("after yylex(); DIRTY: %s\n", (dirty)?"TRUE":"FALSE");
+    if(dirty)
+    {
+        AddCmd('\n');
+    }
     return GetCMD();
 }
 

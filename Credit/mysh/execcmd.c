@@ -6,6 +6,11 @@
 
 int ExecCommand(command * c)
 {
+    int res = ExecIfSpecial(c);
+    if(res == 1)
+    {
+        return res;
+    }
     return CallBin(c->args);
 }
 

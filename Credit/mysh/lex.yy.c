@@ -401,42 +401,44 @@ static const YY_CHAR yy_ec[256] =
 
 static const YY_CHAR yy_meta[13] =
     {   0,
-        1,    2,    3,    4,    2,    4,    1,    1,    1,    1,
-        1,    1
+        1,    2,    3,    4,    2,    4,    1,    2,    2,    2,
+        1,    2
     } ;
 
-static const flex_int16_t yy_base[26] =
+static const flex_int16_t yy_base[25] =
     {   0,
-        0,    0,   24,    0,   11,   43,   43,   12,   15,    0,
-        8,    0,    0,   16,    9,   26,    0,    0,   43,    0,
-       43,   13,   32,   34,   38
+        0,    0,   20,    0,   11,   51,   51,    8,   16,   51,
+        8,    0,    0,   22,    9,   33,    0,   51,   51,    0,
+       51,   13,   44,   46
     } ;
 
-static const flex_int16_t yy_def[26] =
+static const flex_int16_t yy_def[25] =
     {   0,
-       21,    1,   21,   22,   21,   21,   21,   23,   24,   22,
-       22,   22,    5,   23,   14,   24,   25,   22,   21,   14,
-        0,   21,   21,   21,   21
+       21,    1,   21,   22,   21,   21,   21,   23,   24,   21,
+       21,   22,    5,   23,   14,   24,   24,   21,   21,   14,
+        0,   21,   21,   21
     } ;
 
-static const flex_int16_t yy_nxt[56] =
+static const flex_int16_t yy_nxt[64] =
     {   0,
         4,    5,    6,    7,    5,    8,    9,   10,   10,   11,
-        4,   10,   13,   12,   20,   13,   17,   18,   17,   17,
-       17,   19,   15,   21,   21,   21,   15,   17,   21,   17,
-       17,   17,   14,   14,   16,   16,   21,   16,   17,   17,
-       21,   17,    3,   21,   21,   21,   21,   21,   21,   21,
-       21,   21,   21,   21,   21
+        4,   10,   13,   12,   20,   13,   16,   18,   15,   21,
+       21,   21,   16,   21,   21,   21,   16,   19,   21,   21,
+       21,   21,   15,   16,   21,   21,   21,   21,   21,   16,
+       21,   21,   21,   16,   14,   14,   17,   17,   21,   17,
+        3,   21,   21,   21,   21,   21,   21,   21,   21,   21,
+       21,   21,   21
     } ;
 
-static const flex_int16_t yy_chk[56] =
+static const flex_int16_t yy_chk[64] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    5,   22,   15,    5,    9,   11,    9,    9,
-        9,   14,    8,    3,    0,    0,   14,   16,    0,   16,
-       16,   16,   23,   23,   24,   24,    0,   24,   25,   25,
-        0,   25,   21,   21,   21,   21,   21,   21,   21,   21,
-       21,   21,   21,   21,   21
+        1,    1,    5,   22,   15,    5,    9,   11,    8,    3,
+        0,    0,    9,    0,    0,    0,    9,   14,    0,    0,
+        0,    0,   14,   16,    0,    0,    0,    0,    0,   16,
+        0,    0,    0,   16,   23,   23,   24,   24,    0,   24,
+       21,   21,   21,   21,   21,   21,   21,   21,   21,   21,
+       21,   21,   21
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -491,8 +493,8 @@ int cmdcount = 0;
 bool dirty = false;
 
 
-#line 495 "lex.yy.c"
-#line 496 "lex.yy.c"
+#line 497 "lex.yy.c"
+#line 498 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -712,7 +714,7 @@ YY_DECL
 #line 40 "getcmd.c"
 
 
-#line 716 "lex.yy.c"
+#line 718 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -745,7 +747,7 @@ yy_match:
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 43 );
+		while ( yy_base[yy_current_state] != 51 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -812,12 +814,13 @@ YY_RULE_SETUP
 #line 64 "getcmd.c"
 { //Basic keyword
     AddArg(yytext);
+    //"
 }
 	YY_BREAK
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 67 "getcmd.c"
+#line 68 "getcmd.c"
 { //End of entry
     S_PRINTF("NewLine\n");
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
@@ -829,17 +832,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 75 "getcmd.c"
+#line 76 "getcmd.c"
 { 
     E_PRINTF("Unknown character:'%s'\n", yytext);
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 78 "getcmd.c"
+#line 79 "getcmd.c"
 ECHO;
 	YY_BREAK
-#line 843 "lex.yy.c"
+#line 846 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1844,17 +1847,23 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 78 "getcmd.c"
+#line 79 "getcmd.c"
 
 
 command** GetCommands(char* Line)
 {
+    S_PRINTF("GetCommands(%s)\n", Line);
     // Initialize the args before use
     TAILQ_INIT(&args);
     TAILQ_INIT(&cmds);
 
     yy_scan_string(Line);
     yylex();
+    D_PRINTF("after yylex(); DIRTY: %s\n", (dirty)?"TRUE":"FALSE");
+    if(dirty)
+    {
+        AddCmd('\n');
+    }
     return GetCMD();
 }
 
