@@ -792,12 +792,16 @@ YY_RULE_SETUP
 { //Deliminer
     I_PRINTF("Delim %s\n", yytext);
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
+    if(yytext == ">>")
+    {
+        AddCmd('2');
+    }
     AddCmd(yytext[0]);
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 54 "getcmd.c"
+#line 58 "getcmd.c"
 { //Basic keyword
     // AddArg(yytext);
     S_PRINTF("\"MATCH\": %s\n", yytext);
@@ -811,7 +815,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 64 "getcmd.c"
+#line 68 "getcmd.c"
 { //Basic keyword
     AddArg(yytext);
     //"
@@ -820,7 +824,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 68 "getcmd.c"
+#line 72 "getcmd.c"
 { //End of entry
     S_PRINTF("NewLine\n");
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
@@ -832,17 +836,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 76 "getcmd.c"
+#line 80 "getcmd.c"
 { 
     E_PRINTF("Unknown character:'%s'\n", yytext);
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 79 "getcmd.c"
+#line 83 "getcmd.c"
 ECHO;
 	YY_BREAK
-#line 846 "lex.yy.c"
+#line 850 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1847,10 +1851,10 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 79 "getcmd.c"
+#line 83 "getcmd.c"
 
 
-command** GetCommands(char* Line)
+command** GetCommands(char* Line, int*Count)
 {
     S_PRINTF("GetCommands(%s)\n", Line);
     // Initialize the args before use
@@ -1864,7 +1868,7 @@ command** GetCommands(char* Line)
     {
         AddCmd('\n');
     }
-    return GetCMD();
+    return GetCMD(Count);
 }
 
 void AddCmd(char delim)
@@ -1896,6 +1900,7 @@ void AddCmd(char delim)
     MALLOC(c,1);
     c->args = arg_vals;
     c->delim = delim;
+    c->arg_count = argcount;
 
     struct cmd* cm = NULL;
     MALLOC(cm,1);
@@ -1936,8 +1941,9 @@ void AddArg(char * text)
 
 }
 
-command** GetCMD()
+command** GetCMD(int*Count)
 {
+    *Count = cmdcount;
     command ** result = NULL;
     MALLOC(result,cmdcount + 1);
 
@@ -1959,6 +1965,7 @@ command** GetCMD()
         free(c);
         c = NULL;
     }
+    cmdcount = 0;
     return result;
 
 }

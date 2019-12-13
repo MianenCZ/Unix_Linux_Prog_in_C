@@ -4,17 +4,23 @@
 SHELL = /bin/sh
 CC = /usr/bin/gcc
 CFLAGS = -std=c99 -Wall -Wextra 
-INCLUDES = -I Includes
+INCLUDES = -I Includes -l readline
 OUT = "mysh"
-TARGETS = callbin.o mysh.o getcmd.o execcmd.o
-DTARGETS = D_callbin.o D_mysh.o D_getcmd.o D_execcmd.o
+TARGETS = callbin.o mysh.o getcmd.o execcmd.o cd.o fd_getline.o
+DTARGETS = D_callbin.o D_mysh.o D_getcmd.o D_execcmd.o D_cd.o fd_getline.o
 DFLAGS = -D DEBUG
 
-all: clean $(DTARGETS)
+all: debug
+
+r: release
+
+d: debug
+
+debug: clean $(DTARGETS)
 	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -o $(OUT) 
 
 release: clean $(TARGETS)
-	$(CC) -D DEBUG $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -o $(OUT) 
+	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -o $(OUT) 
 
 mysh.o: 
 	$(CC) $(CFLAGS) $(INCLUDES) -c mysh.c
@@ -29,6 +35,10 @@ getcmd.o:
 execcmd.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c execcmd.c
 
+cd.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c cd.c
+fd_getline.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c fd_getline.c
 D_mysh.o: 
 	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c mysh.c
 
@@ -42,12 +52,14 @@ D_getcmd.o:
 D_execcmd.o:
 	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c execcmd.c
 
+D_cd.o:
+	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c cd.c
+
 clean:
-	-@rm callbin.o
-	-@rm mysh.o
-	-@rm getcmd.o
-	-@rm lex.yy.c
-	-@rm mysh
+	-@rm $(DTARGETS)
+	-@rm $(TARGETS)
+	-@rm lex.yy.c	
+	-@rm $(OUT)
 
 install:
 	cp mysh /user/bin

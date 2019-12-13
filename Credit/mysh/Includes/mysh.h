@@ -3,5 +3,6 @@
 
 #include "types.h"
 int ExecCommand(command * c);
-void run_command(command ** c);
+void exec_line(char * line);
+void run_command(command ** c, int Count);
 #endif

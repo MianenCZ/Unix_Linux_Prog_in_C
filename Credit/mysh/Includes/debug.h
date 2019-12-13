@@ -18,6 +18,7 @@
             printf ("\t");\
             printf (args);\
             printf (ANSI_COLOR_RESET);\
+            fflush (stdout);\
         } while (0)
         #define E_PRINTF(args...)\
         do {\
@@ -25,6 +26,7 @@
             printf ("\t");\
             printf (args);\
             printf (ANSI_COLOR_RESET);\
+            fflush (stdout);\
         } while (0)
         #define S_PRINTF(args...)\
         do {\
@@ -32,6 +34,7 @@
             printf ("\t");\
             printf (args);\
             printf (ANSI_COLOR_RESET);\
+            fflush (stdout);\
         } while (0)
         #define I_PRINTF(args...)\
         do {\
@@ -39,11 +42,12 @@
             printf ("\t");\
             printf (args);\
             printf (ANSI_COLOR_RESET);\
+            fflush (stdout);\
         } while (0)        
     #else
-        #define D_PRINTF(args...) do {} while (0)
-        #define E_PRINTF(args...) do {} while (0)
-        #define S_PRINTF(args...) do {} while (0)
-        #define I_PRINTF(args...) do {} while (0)
+        #define D_PRINTF(args...)
+        #define E_PRINTF(args...)
+        #define S_PRINTF(args...)
+        #define I_PRINTF(args...)
     #endif 
 #endif

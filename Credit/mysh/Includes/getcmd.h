@@ -2,9 +2,9 @@
 #define GETCMD_DEF_H
 #include "types.h"
 
-command** GetCommands(char* Line);
+command** GetCommands(char* Line, int* Count);
 void AddCmd(char delim);
 void AddArg(char * text);
-command** GetCMD();
+command** GetCMD(int*Count);
 
 #endif

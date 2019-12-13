@@ -49,6 +49,10 @@ bool dirty = false;
 ;|(>>)|<|>|\| { //Deliminer
     I_PRINTF("Delim %s\n", yytext);
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
+    if(yytext == ">>")
+    {
+        AddCmd('2');
+    }
     AddCmd(yytext[0]);
 }
 \"((\\\")|[^"\n\r])+\" { //Basic keyword
@@ -78,7 +82,7 @@ bool dirty = false;
 }
 %%
 
-command** GetCommands(char* Line)
+command** GetCommands(char* Line, int*Count)
 {
     S_PRINTF("GetCommands(%s)\n", Line);
     // Initialize the args before use
@@ -92,7 +96,7 @@ command** GetCommands(char* Line)
     {
         AddCmd('\n');
     }
-    return GetCMD();
+    return GetCMD(Count);
 }
 
 void AddCmd(char delim)
@@ -124,6 +128,7 @@ void AddCmd(char delim)
     MALLOC(c,1);
     c->args = arg_vals;
     c->delim = delim;
+    c->arg_count = argcount;
 
     struct cmd* cm = NULL;
     MALLOC(cm,1);
@@ -164,8 +169,9 @@ void AddArg(char * text)
 
 }
 
-command** GetCMD()
+command** GetCMD(int*Count)
 {
+    *Count = cmdcount;
     command ** result = NULL;
     MALLOC(result,cmdcount + 1);
 
@@ -187,6 +193,7 @@ command** GetCMD()
         free(c);
         c = NULL;
     }
+    cmdcount = 0;
     return result;
 
 }
