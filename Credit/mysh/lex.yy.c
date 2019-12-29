@@ -457,7 +457,7 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "getcmd.c"
 /* Predefines */
-#line 3 "getcmd.c"
+#line 4 "getcmd.c"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -711,7 +711,7 @@ YY_DECL
 		}
 
 	{
-#line 40 "getcmd.c"
+#line 41 "getcmd.c"
 
 
 #line 718 "lex.yy.c"
@@ -773,7 +773,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 42 "getcmd.c"
+#line 43 "getcmd.c"
 { //Comment
     S_PRINTF("Comment: %s\n", yytext);
 
@@ -781,14 +781,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 46 "getcmd.c"
+#line 47 "getcmd.c"
 { 
     I_PRINTF("WhiteChars: /%s/\n", yytext);
+    // free(yytext);
 }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 49 "getcmd.c"
+#line 51 "getcmd.c"
 { //Deliminer
     I_PRINTF("Delim %s\n", yytext);
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
@@ -797,11 +798,12 @@ YY_RULE_SETUP
         AddCmd('2');
     }
     AddCmd(yytext[0]);
+    // free(yytext);
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 58 "getcmd.c"
+#line 61 "getcmd.c"
 { //Basic keyword
     // AddArg(yytext);
     S_PRINTF("\"MATCH\": %s\n", yytext);
@@ -811,11 +813,12 @@ YY_RULE_SETUP
     S_PRINTF("MATCH: %s\n", text);
     AddArg(text);
     free(text);
+    // free(yytext);
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 68 "getcmd.c"
+#line 72 "getcmd.c"
 { //Basic keyword
     AddArg(yytext);
     //"
@@ -824,7 +827,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 72 "getcmd.c"
+#line 76 "getcmd.c"
 { //End of entry
     S_PRINTF("NewLine\n");
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
@@ -832,21 +835,23 @@ YY_RULE_SETUP
     {
         AddCmd('\n');
     }
+    // free(yytext);
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 80 "getcmd.c"
+#line 85 "getcmd.c"
 { 
     E_PRINTF("Unknown character:'%s'\n", yytext);
+    // free(yytext);
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 83 "getcmd.c"
+#line 89 "getcmd.c"
 ECHO;
 	YY_BREAK
-#line 850 "lex.yy.c"
+#line 855 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1851,11 +1856,15 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 83 "getcmd.c"
+#line 89 "getcmd.c"
 
 
 command** GetCommands(char* Line, int*Count)
 {
+    
+
+
+
     S_PRINTF("GetCommands(%s)\n", Line);
     // Initialize the args before use
     TAILQ_INIT(&args);
@@ -1863,6 +1872,7 @@ command** GetCommands(char* Line, int*Count)
 
     yy_scan_string(Line);
     yylex();
+
     D_PRINTF("after yylex(); DIRTY: %s\n", (dirty)?"TRUE":"FALSE");
     if(dirty)
     {

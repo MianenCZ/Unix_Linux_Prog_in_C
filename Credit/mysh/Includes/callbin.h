@@ -16,4 +16,6 @@ child_pid - Child process identification
 returns - 0 if waiting finished successfully, -1 on timeout or halt
 */
 int AwaitChild(pid_t child_pid);
+
+void handle_sigint(int sig);
 #endif

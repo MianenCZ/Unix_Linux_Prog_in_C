@@ -10,6 +10,7 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
 #include "types.h"
 #include "mysh.h"
 #include "callbin.h"
@@ -20,7 +21,8 @@
 #include "cd.h"
 #include "colorout.h"
 #include "fd_getline.h"
-
+#include "myshval.h"
+#include "perr.h"
 
 // #include <stdio.h>
 // #include <sys/types.h>
@@ -28,11 +30,11 @@
 // #include <unistd.h>
 // #include <getopt.h>
 
-static char* Me;
-
 int main(int argc, char* const *argv)
 {
-    Me = *argv;
+    E_PRINTF("stoop");
+
+    mysh = *argv;
     int opt; 
     while((opt = getopt(argc, argv, ":hc:")) != -1)  
     {  
@@ -42,8 +44,7 @@ int main(int argc, char* const *argv)
             {
                 int command_count = 0;
                 D_PRINTF("c cmd: %s\n", optarg);
-                command ** c = GetCommands(optarg, &command_count);        
-                run_command(c, command_count); 
+                exec_line(optarg);
                 return 0;
             }
             case ':':  
@@ -67,30 +68,62 @@ int main(int argc, char* const *argv)
             char * line = NULL;
             if(fd_get_line(fd, &line, &n) != EOF)
             {
-                exec_line(line);
+                exec_line(line);                
+                FREE(line);
+                if(myshval != 0)
+                    return(myshval);
+
             }
             else
             {
-                return(0);
+                FREE(line);
+                return(myshval);
             }
         }
     }
     
     while(1)
-    {         
-        char * dir = GetCurrentDir();    
-        char * line = readline("Mysh$ ");
+    {     
+        signal(SIGINT, handle_sig_in);    
+        char * line = NULL;
+        S_PRINTF("%s/n", line);
+        char * cdir = GetCurrentDir();
+        line = readline("Mysh$ ");
+        S_PRINTF("%s/n", line);
+        if(line == NULL)
+        {
+            printf("exit\n");
+            exit((myshval == 0)?0:-1);
+        }                        
         add_history(line);
-        exec_line(line);
+        exec_line(line);   
+        signal(SIGINT, handle_sig_in);
+        free(line);
+        free(cdir);
     }
     return(0);
 }
 
+//NO LEAK 16/12/29
 void exec_line(char * line)
 {
     int command_count = 0;
     command ** c = GetCommands(line, &command_count);        
     run_command(c, command_count);
+    //free c
+    for (int i = 0; i < command_count; i++)
+    {
+        command * act = *(c+i);
+        //free args
+        for (int j = 0; j < act->arg_count + 1; j++)
+        {
+            free(*(act->args + j));
+        }
+        free(act->args);        
+        free(act);
+    }
+    free(c);
+    
 }
 
 void run_command(command ** c, int Count)
@@ -110,13 +143,16 @@ void run_command(command ** c, int Count)
                 }
                 else
                 {
-                    printf("error: 1: Syntax error nearby %c\n", (*(c + i))->delim);
+                    
+                    PERR("%s: syntax error nearby %c\n", mysh, (*(c + i))->delim);
+                    myshval = 2;
                     return;
                 } 
             }
             else
             {
-                printf("error: 1: Syntax error nearby %c\n", (*(c + i))->delim);
+                PERR("%s: syntax error nearby %c\n", mysh, (*(c + i))->delim);
+                myshval = 2;
                 return;
             }
 
@@ -131,13 +167,22 @@ void run_command(command ** c, int Count)
         // E_PRINTF("*(c + i + 1) != NULL ---> %s\n", (*(c + i + 1) != NULL)?"TRUE":"FALSE");
         if(ExecCommand(*(c+i)) == -1)
         {
-            printf(ANSI_COLOR_RED);
-            printf("%s: %s: %s \n", Me, *(*(c + i))->args, "command not found");
-            printf(ANSI_COLOR_RESET);
-            //Error ocurred
+            PERR("%s: %s: command not found \n", mysh, *(*(c + i))->args);
         }
         //TODO: FreeCommand
     }    
 
 }
+
+void handle_sig_in(int sig) 
+{ 
+    signal(SIGINT, handle_sig_in);   
+    D_PRINTF("IN PROMPT CTRL+C");
+    printf("\n"); // Move to a new line
+    rl_on_new_line(); // Regenerate the prompt on a newline
+    rl_replace_line("", 0); // Clear the previous text
+    rl_redisplay();
+    myshval = 128 + sig; 
+}
+
 

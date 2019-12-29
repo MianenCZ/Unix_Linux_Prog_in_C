@@ -1,4 +1,5 @@
 /* Predefines */
+
 %{
 
 #include <stdlib.h>
@@ -45,6 +46,7 @@ bool dirty = false;
 }
 (\ |\t)+ { 
     I_PRINTF("WhiteChars: /%s/\n", yytext);
+    // free(yytext);
 }
 ;|(>>)|<|>|\| { //Deliminer
     I_PRINTF("Delim %s\n", yytext);
@@ -54,6 +56,7 @@ bool dirty = false;
         AddCmd('2');
     }
     AddCmd(yytext[0]);
+    // free(yytext);
 }
 \"((\\\")|[^"\n\r])+\" { //Basic keyword
     // AddArg(yytext);
@@ -64,6 +67,7 @@ bool dirty = false;
     S_PRINTF("MATCH: %s\n", text);
     AddArg(text);
     free(text);
+    // free(yytext);
 }
 ([^ "\t\n\r><;\|])+ { //Basic keyword
     AddArg(yytext);
@@ -76,14 +80,20 @@ bool dirty = false;
     {
         AddCmd('\n');
     }
+    // free(yytext);
 }
 . { 
     E_PRINTF("Unknown character:'%s'\n", yytext);
+    // free(yytext);
 }
 %%
 
 command** GetCommands(char* Line, int*Count)
 {
+    
+
+
+
     S_PRINTF("GetCommands(%s)\n", Line);
     // Initialize the args before use
     TAILQ_INIT(&args);
@@ -91,6 +101,7 @@ command** GetCommands(char* Line, int*Count)
 
     yy_scan_string(Line);
     yylex();
+
     D_PRINTF("after yylex(); DIRTY: %s\n", (dirty)?"TRUE":"FALSE");
     if(dirty)
     {

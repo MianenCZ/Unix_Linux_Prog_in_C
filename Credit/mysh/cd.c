@@ -9,12 +9,15 @@
 #include "cd.h"
 #include "memory.h"
 #include "debug.h"
+#include "myshval.h"
+#include "perr.h"
 
 void RunCD(char ** args, int argc)
 {
     if(argc > 2)
     {
-        printf("cd: To many arguments\n");
+        PERR("%s: cd: too many arguments\n", mysh);
+        myshval = 1;
         return;
     }
     else if(argc == 2 && strncmp(*(args + 1), "-", 1) == 0)
@@ -25,7 +28,9 @@ void RunCD(char ** args, int argc)
             return;
         }
         ChangeDir(Previous);
-        printf("%s\n", GetCurrentDir());
+        char* cdir = GetCurrentDir();
+        printf("%s\n", cdir);
+        free(cdir);
     }
     else if(argc == 1)
     {
@@ -73,7 +78,8 @@ char * GetCurrentDir()
         
     }
 
-    // chdir(res);
+    // free(home);
+    // free(current);
     
     D_PRINTF("Enter: GetCurrentDir\n");  
     return res;     
@@ -84,7 +90,7 @@ void ChangeDir(char * dir)
     D_PRINTF("Enter: ChangeDir([char *] %s)\n", dir);
     if(*dir == '~')
     {
-    char * new;
+        char * new;
         char * home = getenv("HOME");        
         CALLOC(new, strlen(home) + strlen(dir));
         strcpy(new, home);
@@ -92,7 +98,7 @@ void ChangeDir(char * dir)
         S_PRINTF("Cd to: %s\n", new);
         DoChange(new);
         FREE(new);
-        // FREE(home);
+        FREE(home);
     }
     else
     {
@@ -101,7 +107,6 @@ void ChangeDir(char * dir)
     
     D_PRINTF("Leave: ChangeDir\n");
     return;
-
 }
 
 void DoChange(char * dir)
@@ -119,8 +124,10 @@ void DoChange(char * dir)
     }
     else
     {
-        printf("cd: %s: %s\n", dir, strerror(errno));
+        PERR("%s: cd: %s: %s\n", mysh, dir, strerror(errno));
+        myshval = 1;
     }
+    // free(prev);
 
     D_PRINTF("Leave: DoChange\n");
 }

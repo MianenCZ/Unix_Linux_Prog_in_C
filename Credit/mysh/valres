@@ -1,0 +1,63 @@
+==26== Memcheck, a memory error detector
+==26== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==26== Using Valgrind-3.14.0 and LibVEX; rerun with -h for copyright info
+==26== Command: ./mysh
+==26==
+==26== error calling PR_SET_PTRACER, vgdb might block
+Mysh$ ls
+Includes  Makefile  Prep.c  Scripts  callbin.c  callbin.o  cd.c  cd.o  execcmd.c  execcmd.o  fd_getline.c  fd_getline.o  fdreadline.o  getcmd.c  getcmd.o  lex.yy.c  mysh  mysh.c  mysh.o  tests
+Mysh$ echo a
+a
+Mysh$ exit
+==26==
+==26== HEAP SUMMARY:
+==26==     in use at exit: 139,757 bytes in 234 blocks
+==26==   total heap usage: 341 allocs, 107 frees, 150,540 bytes allocated
+==26==
+==26== 10 bytes in 2 blocks are definitely lost in loss record 8 of 67
+==26==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==26==    by 0x48874E8: xmalloc (in /lib/x86_64-linux-gnu/libreadline.so.7.0)
+==26==    by 0x4863B85: readline_internal_teardown (in /lib/x86_64-linux-gnu/libreadline.so.7.0)
+==26==    by 0x4864CE1: readline (in /lib/x86_64-linux-gnu/libreadline.so.7.0)
+==26==    by 0x10A576: main (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==
+==26== 82 bytes in 2 blocks are definitely lost in loss record 32 of 67
+==26==    at 0x4837B65: calloc (vg_replace_malloc.c:752)
+==26==    by 0x10CD5D: GetCurrentDir (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10A566: main (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==
+==26== 114 (32 direct, 82 indirect) bytes in 2 blocks are definitely lost in loss record 35 of 67
+==26==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==26==    by 0x10C961: GetCMD (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10C596: GetCommands (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10A5BC: exec_line (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10A592: main (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==
+==26== 140 (128 direct, 12 indirect) bytes in 2 blocks are definitely lost in loss record 36 of 67
+==26==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==26==    by 0x10C4E0: yyalloc (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10C14B: yy_scan_buffer (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10C2C4: yy_scan_bytes (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10C218: yy_scan_string (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10C570: GetCommands (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10A5BC: exec_line (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10A592: main (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==
+==26== 156 bytes in 3 blocks are definitely lost in loss record 38 of 67
+==26==    at 0x483577F: malloc (vg_replace_malloc.c:299)
+==26==    by 0x4B26DB9: strdup (strdup.c:42)
+==26==    by 0x4B8A61D: get_current_dir_name (getdirname.c:40)
+==26==    by 0x10CCC0: GetCurrentDir (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==    by 0x10A566: main (in /home/mianen/Unix_Linux_Programing_in_C/Credit/mysh/mysh)
+==26==
+==26== LEAK SUMMARY:
+==26==    definitely lost: 408 bytes in 11 blocks
+==26==    indirectly lost: 94 bytes in 9 blocks
+==26==      possibly lost: 0 bytes in 0 blocks
+==26==    still reachable: 139,255 bytes in 214 blocks
+==26==         suppressed: 0 bytes in 0 blocks
+==26== Reachable blocks (those to which a pointer was found) are not shown.
+==26== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==26==
+==26== For counts of detected and suppressed errors, rerun with: -v
+==26== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)

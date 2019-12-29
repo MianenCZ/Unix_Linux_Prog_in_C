@@ -1,20 +1,25 @@
 
-.PHONY: clean 
+.PHONY: clean cltest
 
 SHELL = /bin/sh
-CC = /usr/bin/gcc
-CFLAGS = -std=c99 -Wall -Wextra 
-INCLUDES = -I Includes -l readline
-OUT = "mysh"
-TARGETS = callbin.o mysh.o getcmd.o execcmd.o cd.o fd_getline.o
-DTARGETS = D_callbin.o D_mysh.o D_getcmd.o D_execcmd.o D_cd.o fd_getline.o
+CC = /usr/bin/gcc -ggdb3
+CFLAGS = -std=c99 -Wall -Wextra -ggdb3
+INCLUDES = -I Includes -L /lib/x86_64-linux-gnu/ -l readline
+OUT = ./mysh
+TARGETS = callbin.o mysh.o getcmd.o execcmd.o cd.o fd_getline.o myshval.o exit.o
+DTARGETS = D_callbin.o D_mysh.o D_getcmd.o D_execcmd.o D_cd.o fd_getline.o myshval.o exit.o
 DFLAGS = -D DEBUG
+TESTFILE = mytests/Phase01.mysh
 
 all: debug
 
 r: release
 
 d: debug
+
+val: debug
+	valgrind --leak-check=full --show-leak-kinds=all $(OUT) $(TESTFILE)
+	#valgrind --leak-check=full --show-leak-kinds=all $(OUT) -c "echo A;echo B;echo C\n"
 
 debug: clean $(DTARGETS)
 	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -o $(OUT) 
@@ -39,6 +44,13 @@ cd.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c cd.c
 fd_getline.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c fd_getline.c
+
+myshval.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c myshval.c
+
+exit.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c exit.c
+
 D_mysh.o: 
 	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c mysh.c
 
@@ -63,3 +75,9 @@ clean:
 
 install:
 	cp mysh /user/bin
+
+test: cltest
+	gcc -I Includes -D TEST fd_getline.c -o TEST_fd_getline.out
+
+cltest:
+	-@rm TEST_fd_getline.out

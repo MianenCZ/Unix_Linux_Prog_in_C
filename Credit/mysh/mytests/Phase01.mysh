@@ -1,0 +1,55 @@
+echo X
+exit 10
+echo X;
+/bin/ls test-003.mysh
+ls test-003.mysh
+echo X; echo Y
+echo X; echo Y;
+echo A; echo B; echo C;
+echo D; echo E; echo F;
+echo G; echo H; echo I;
+echo J; echo K; echo L;
+echo M; echo N; echo O;
+echo A B C; echo Y; # Comment
+# The next line contains only spaces.
+
+cd /tmp
+pwd
+cd /tmp
+pwd
+cd /etc
+pwd
+cd -
+pwd
+;;
+cd one two
+# Comment
+# Comment
+# Comment
+# Comment
+
+# Comment
+# Comment
+
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+exit 100
+

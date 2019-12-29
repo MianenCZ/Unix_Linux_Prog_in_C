@@ -7,7 +7,7 @@
 int fd_getchar(const int fd)
 {
     static char buff[GET_C_BUFF_SIZE];
-    static char *chr;
+    static char* chr;
     static int  pos = 0;
     static ssize_t  ret = 0;
 
@@ -52,9 +52,47 @@ int fd_get_line(const int fd, char **lineptr, ssize_t *n)
 
         if(pos >= *n)
         {
-            REALLOC((*lineptr), (*n) * 9 / 8);
-            *n = (*n) * 9 / 8;
-        }
-        
+            REALLOC((*lineptr), (*n) * 17 / 8);
+            *n = (*n) * 17 / 8;
+        }        
     }
 }
+
+#ifdef TEST
+ #include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+
+int main(int argc, char const *argv[])
+{
+    if(argc != 2)
+    {
+        printf("Test USAGE: %s filename", *argv);
+        return 1;
+    }
+
+    int fd = open(argv[1], O_RDONLY);
+    while(1)
+    {
+        ssize_t n = 0;
+        char * line = NULL;
+        if(fd_get_line(fd, &line, &n) != EOF)
+        {
+            printf("%s\n", line);
+            free(line);
+        }
+        else
+        {
+            free(line);
+            break;
+        }
+        
+    
+    }
+
+    return 0;
+}
+
+
+#endif
