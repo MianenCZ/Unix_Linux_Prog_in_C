@@ -1,5 +1,7 @@
 /* Predefines */
-
+%option noyywrap
+%option nounput
+%option noinput
 %{
 
 #include <stdlib.h>
@@ -31,9 +33,9 @@ struct cmd
 
 TAILQ_HEAD(args, arg) args;
 TAILQ_HEAD(cmds, cmd) cmds;
-int argcount = 0;
-int cmdcount = 0;
-bool dirty = false;
+static int argcount = 0;
+static int cmdcount = 0;
+static bool dirty = false;
 
 
 %}
@@ -90,10 +92,6 @@ bool dirty = false;
 
 command** GetCommands(char* Line, int*Count)
 {
-    
-
-
-
     S_PRINTF("GetCommands(%s)\n", Line);
     // Initialize the args before use
     TAILQ_INIT(&args);
@@ -101,6 +99,8 @@ command** GetCommands(char* Line, int*Count)
 
     yy_scan_string(Line);
     yylex();
+    yylex_destroy();
+    // yy_delete_buffer(YY_CURRENT_BUFFER);
 
     D_PRINTF("after yylex(); DIRTY: %s\n", (dirty)?"TRUE":"FALSE");
     if(dirty)
@@ -131,8 +131,7 @@ void AddCmd(char delim)
     {
         e = TAILQ_FIRST(&args);
         TAILQ_REMOVE(&args, e, nextarg);
-        free(e);
-        e = NULL;
+        FREE(e);
     }
 
     command* c = NULL;
@@ -157,12 +156,6 @@ void AddArg(char * text)
     dirty = true;
     struct arg * e = NULL;
     MALLOC(e,1);
-    // e = malloc(sizeof(struct arg));
-    // if (e == NULL)
-    // {
-    //     fprintf(stderr, "malloc failed");
-    //     exit(EXIT_FAILURE);
-    // }
 
     char* copy = NULL;
     size_t len = strlen(text);
@@ -173,9 +166,7 @@ void AddArg(char * text)
 
     e->s = copy;
     // Actually insert the arg e into the queue at the end
-    TAILQ_INSERT_TAIL(&args, e, nextarg);
-    e = NULL;
-    
+    TAILQ_INSERT_TAIL(&args, e, nextarg);    
     argcount++;
 
 }

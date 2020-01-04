@@ -1,3 +1,6 @@
+//source: https://gist.github.com/maestrelli/1191287
+
+
 #ifndef MEMORY_DEF_H
 #define MEMORY_DEF_H
 #include <stdlib.h>

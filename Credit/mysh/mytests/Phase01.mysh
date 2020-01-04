@@ -1,5 +1,9 @@
 echo X
-exit 10
+cd /tmp
+pwd
+pwd
+pwd
+cd a b
 echo X;
 /bin/ls test-003.mysh
 ls test-003.mysh
@@ -13,8 +17,8 @@ echo M; echo N; echo O;
 echo A B C; echo Y; # Comment
 # The next line contains only spaces.
 
-cd /tmp
-pwd
+
+
 cd /tmp
 pwd
 cd /etc
@@ -22,7 +26,6 @@ pwd
 cd -
 pwd
 ;;
-cd one two
 # Comment
 # Comment
 # Comment

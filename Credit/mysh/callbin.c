@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <errno.h>
 #include "callbin.h"
 #include "debug.h"
 #include "myshval.h"
@@ -31,7 +32,7 @@ int CallBin(char* const argv[])
   }
 
   // D_PRINTF("Child %d await start\n", my_pid);
-  AwaitChild(my_pid);
+  myshval = AwaitChild(my_pid);
   // I_PRINTF("Child %d await stop\n", my_pid);
   return 0;
 }
@@ -44,7 +45,9 @@ int AwaitChild(pid_t child_pid)
   {
 
   }
-  return 0;
+  int exit_val = WEXITSTATUS(status);
+  D_PRINTF("Child exited with %d\n", exit_val);
+  return exit_val;
 }
 
 void handle_sigint(int sig) 

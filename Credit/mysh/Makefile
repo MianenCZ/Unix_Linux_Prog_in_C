@@ -11,13 +11,13 @@ DTARGETS = D_callbin.o D_mysh.o D_getcmd.o D_execcmd.o D_cd.o fd_getline.o myshv
 DFLAGS = -D DEBUG
 TESTFILE = mytests/Phase01.mysh
 
-all: debug
+all: release
 
 r: release
 
 d: debug
 
-val: debug
+val: release
 	valgrind --leak-check=full --show-leak-kinds=all $(OUT) $(TESTFILE)
 	#valgrind --leak-check=full --show-leak-kinds=all $(OUT) -c "echo A;echo B;echo C\n"
 
@@ -35,7 +35,7 @@ callbin.o:
 
 getcmd.o:
 	flex getcmd.c
-	$(CC) $(INCLUDES) -c lex.yy.c -o getcmd.o
+	$(CC) $(CFLAGS) $(INCLUDES) -c lex.yy.c -o getcmd.o
 
 execcmd.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c execcmd.c
@@ -59,7 +59,7 @@ D_callbin.o:
 
 D_getcmd.o:
 	flex getcmd.c
-	$(CC) $(DFLAGS) $(INCLUDES) -c lex.yy.c -o getcmd.o
+	$(CC) $(CFLAGS) $(DFLAGS) $(INCLUDES) -c lex.yy.c -o getcmd.o
 
 D_execcmd.o:
 	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c execcmd.c

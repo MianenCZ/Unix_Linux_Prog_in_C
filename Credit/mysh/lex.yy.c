@@ -322,6 +322,9 @@ void yyfree ( void *  );
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
 /* Begin user sect3 */
+
+#define yywrap() (/*CONSTCOND*/1)
+#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -457,7 +460,8 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "getcmd.c"
 /* Predefines */
-#line 4 "getcmd.c"
+#define YY_NO_INPUT 1
+#line 6 "getcmd.c"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -488,13 +492,13 @@ struct cmd
 
 TAILQ_HEAD(args, arg) args;
 TAILQ_HEAD(cmds, cmd) cmds;
-int argcount = 0;
-int cmdcount = 0;
-bool dirty = false;
+static int argcount = 0;
+static int cmdcount = 0;
+static bool dirty = false;
 
 
-#line 497 "lex.yy.c"
-#line 498 "lex.yy.c"
+#line 501 "lex.yy.c"
+#line 502 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -554,8 +558,6 @@ extern int yywrap ( void );
 #endif
 
 #ifndef YY_NO_UNPUT
-    
-    static void yyunput ( int c, char *buf_ptr  );
     
 #endif
 
@@ -711,10 +713,10 @@ YY_DECL
 		}
 
 	{
-#line 41 "getcmd.c"
+#line 43 "getcmd.c"
 
 
-#line 718 "lex.yy.c"
+#line 720 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -773,7 +775,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 43 "getcmd.c"
+#line 45 "getcmd.c"
 { //Comment
     S_PRINTF("Comment: %s\n", yytext);
 
@@ -781,7 +783,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 47 "getcmd.c"
+#line 49 "getcmd.c"
 { 
     I_PRINTF("WhiteChars: /%s/\n", yytext);
     // free(yytext);
@@ -789,7 +791,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 51 "getcmd.c"
+#line 53 "getcmd.c"
 { //Deliminer
     I_PRINTF("Delim %s\n", yytext);
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
@@ -803,7 +805,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 61 "getcmd.c"
+#line 63 "getcmd.c"
 { //Basic keyword
     // AddArg(yytext);
     S_PRINTF("\"MATCH\": %s\n", yytext);
@@ -818,7 +820,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 72 "getcmd.c"
+#line 74 "getcmd.c"
 { //Basic keyword
     AddArg(yytext);
     //"
@@ -827,7 +829,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 76 "getcmd.c"
+#line 78 "getcmd.c"
 { //End of entry
     S_PRINTF("NewLine\n");
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
@@ -840,7 +842,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 85 "getcmd.c"
+#line 87 "getcmd.c"
 { 
     E_PRINTF("Unknown character:'%s'\n", yytext);
     // free(yytext);
@@ -848,10 +850,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 89 "getcmd.c"
+#line 91 "getcmd.c"
 ECHO;
 	YY_BREAK
-#line 855 "lex.yy.c"
+#line 857 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1186,43 +1188,6 @@ static int yy_get_next_buffer (void)
 }
 
 #ifndef YY_NO_UNPUT
-
-    static void yyunput (int c, char * yy_bp )
-{
-	char *yy_cp;
-    
-    yy_cp = (yy_c_buf_p);
-
-	/* undo effects of setting up yytext */
-	*yy_cp = (yy_hold_char);
-
-	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-		{ /* need to shift things up to make room */
-		/* +2 for EOB chars. */
-		int number_to_move = (yy_n_chars) + 2;
-		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
-					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
-		char *source =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
-
-		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
-			*--dest = *--source;
-
-		yy_cp += (int) (dest - source);
-		yy_bp += (int) (dest - source);
-		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
-			(yy_n_chars) = (int) YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
-
-		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
-		}
-
-	*--yy_cp = (char) c;
-
-	(yytext_ptr) = yy_bp;
-	(yy_hold_char) = *yy_cp;
-	(yy_c_buf_p) = yy_cp;
-}
 
 #endif
 
@@ -1856,15 +1821,11 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 89 "getcmd.c"
+#line 91 "getcmd.c"
 
 
 command** GetCommands(char* Line, int*Count)
 {
-    
-
-
-
     S_PRINTF("GetCommands(%s)\n", Line);
     // Initialize the args before use
     TAILQ_INIT(&args);
@@ -1872,6 +1833,8 @@ command** GetCommands(char* Line, int*Count)
 
     yy_scan_string(Line);
     yylex();
+    yylex_destroy();
+    // yy_delete_buffer(YY_CURRENT_BUFFER);
 
     D_PRINTF("after yylex(); DIRTY: %s\n", (dirty)?"TRUE":"FALSE");
     if(dirty)
@@ -1902,8 +1865,7 @@ void AddCmd(char delim)
     {
         e = TAILQ_FIRST(&args);
         TAILQ_REMOVE(&args, e, nextarg);
-        free(e);
-        e = NULL;
+        FREE(e);
     }
 
     command* c = NULL;
@@ -1928,12 +1890,6 @@ void AddArg(char * text)
     dirty = true;
     struct arg * e = NULL;
     MALLOC(e,1);
-    // e = malloc(sizeof(struct arg));
-    // if (e == NULL)
-    // {
-    //     fprintf(stderr, "malloc failed");
-    //     exit(EXIT_FAILURE);
-    // }
 
     char* copy = NULL;
     size_t len = strlen(text);
@@ -1944,9 +1900,7 @@ void AddArg(char * text)
 
     e->s = copy;
     // Actually insert the arg e into the queue at the end
-    TAILQ_INSERT_TAIL(&args, e, nextarg);
-    e = NULL;
-    
+    TAILQ_INSERT_TAIL(&args, e, nextarg);    
     argcount++;
 
 }

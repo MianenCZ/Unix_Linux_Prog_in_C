@@ -51,7 +51,7 @@ char * GetCurrentDir()
     char * current = get_current_dir_name();
 
     char * res = NULL;
-    if(strlen(home) > strlen(current))
+    if(home == NULL || strlen(home) > strlen(current))
     {
         //Cannot be change to ~
         res = strdup(current);   
@@ -79,9 +79,9 @@ char * GetCurrentDir()
     }
 
     // free(home);
-    // free(current);
+    free(current);
     
-    D_PRINTF("Enter: GetCurrentDir\n");  
+    D_PRINTF("Leave: GetCurrentDir with result: \"%s\"\n", res);  
     return res;     
 }
 
@@ -120,14 +120,18 @@ void DoChange(char * dir)
         {
             FREE(Previous);
         }
+        // MALLOC(Previous, strlen(prev));
+        // strcpy(Previous, prev);
         Previous = prev;
+        //free(prev);
     }
     else
     {
         PERR("%s: cd: %s: %s\n", mysh, dir, strerror(errno));
         myshval = 1;
+        free(prev);
     }
-    // free(prev);
+    // 
 
     D_PRINTF("Leave: DoChange\n");
 }
