@@ -172,7 +172,8 @@ void run_command(command ** c, int Count)
     D_PRINTF("Run comand Line: Count = %d\n", Count);
     for (int i = 0; i < Count; i++)
     {
-        if(*(*(c + i))->args == NULL)
+        //TODO: on non';' delimeter reaction
+        if(*(*(c + i))->args == NULL || ((*(c + i))->delim != ';' && (*(c + i))->delim != '\n' ))
         {
             E_PRINTF("NULL DELIM: %c\n", (*(c + i))->delim);
             if((*(c + i))->delim == ';')
@@ -224,6 +225,7 @@ void handle_sig_in(int sig)
     rl_redisplay();
     myshval = 128 + sig; 
 }
+
 void print_help(void)
 {    
     printf("MYSHEL, version 0.1.2 - release-(x86_64-pc-linux-gnu)\n");
