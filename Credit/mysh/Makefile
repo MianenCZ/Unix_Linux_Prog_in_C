@@ -4,7 +4,7 @@
 SHELL = /bin/sh
 CC = /usr/bin/gcc -ggdb3
 CFLAGS = -std=c99 -Wall -Wextra -ggdb3
-INCLUDES = -I Includes -L /lib/x86_64-linux-gnu/ -l readline
+INCLUDES = -I Includes
 OUT = ./mysh
 TARGETS = callbin.o mysh.o getcmd.o execcmd.o cd.o fd_getline.o myshval.o exit.o
 DTARGETS = D_callbin.o D_mysh.o D_getcmd.o D_execcmd.o D_cd.o fd_getline.o myshval.o exit.o
@@ -18,14 +18,15 @@ r: release
 d: debug
 
 val: release
-	valgrind --leak-check=full --show-leak-kinds=all $(OUT) $(TESTFILE)
+	#valgrind --leak-check=full --show-leak-kinds=all $(OUT) $(TESTFILE)
+	valgrind --leak-check=full $(OUT) $(TESTFILE)
 	#valgrind --leak-check=full --show-leak-kinds=all $(OUT) -c "echo A;echo B;echo C\n"
 
 debug: clean $(DTARGETS)
-	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -o $(OUT) 
+	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -l readline -o $(OUT) 
 
 release: clean $(TARGETS)
-	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -o $(OUT) 
+	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -l readline -o $(OUT) 
 
 mysh.o: 
 	$(CC) $(CFLAGS) $(INCLUDES) -c mysh.c
@@ -68,10 +69,10 @@ D_cd.o:
 	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c cd.c
 
 clean:
-	-@rm $(DTARGETS)
-	-@rm $(TARGETS)
-	-@rm lex.yy.c	
-	-@rm $(OUT)
+	-@rm -f $(DTARGETS)
+	-@rm -f $(TARGETS)
+	-@rm -f lex.yy.c	
+	-@rm -f $(OUT)
 
 install:
 	cp mysh /user/bin

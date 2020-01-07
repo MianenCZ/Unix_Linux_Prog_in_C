@@ -1,10 +1,7 @@
 #ifndef CD_DEF_H
 #define CD_DEF_H
 
-/*
-Previous directory
- */
-char * Previous;
+
 
 /*
 Run cd command
@@ -26,5 +23,9 @@ Accept relative, full or from $HOME path
 void ChangeDir(char * Dir);
 
 void DoChange(char * dir);
+
+void cd_clear(void);
+
+void cd_init(void);
 
 #endif

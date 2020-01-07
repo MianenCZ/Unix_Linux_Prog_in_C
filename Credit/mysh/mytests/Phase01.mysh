@@ -3,10 +3,8 @@ cd /tmp
 pwd
 pwd
 pwd
-cd a b
+# cd a b
 echo X;
-/bin/ls test-003.mysh
-ls test-003.mysh
 echo X; echo Y
 echo X; echo Y;
 echo A; echo B; echo C;
@@ -54,5 +52,3 @@ pwd
 # Comment
 # Comment
 # Comment
-exit 100
-

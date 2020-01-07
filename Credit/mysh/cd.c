@@ -12,10 +12,21 @@
 #include "myshval.h"
 #include "perr.h"
 
+#define     ENV_OVERWRITE        1
+#define     ENV_NONOWERWRITE     0
+
+/*
+Previous directory
+ */
+static char * Previous;
+//TODO: SET PWD, SET OLDPWD
+
+
 void RunCD(char ** args, int argc)
 {
     if(argc > 2)
     {
+        
         PERR("%s: cd: too many arguments\n", mysh);
         myshval = 1;
         return;
@@ -48,7 +59,7 @@ char * GetCurrentDir()
 {    
     D_PRINTF("Enter: GetCurrentDir()\n");
     char * home = getenv("HOME");
-    char * current = get_current_dir_name();
+    char * current = getcwd(NULL, 0);
 
     char * res = NULL;
     if(home == NULL || strlen(home) > strlen(current))
@@ -120,9 +131,9 @@ void DoChange(char * dir)
         {
             FREE(Previous);
         }
-        // MALLOC(Previous, strlen(prev));
-        // strcpy(Previous, prev);
         Previous = prev;
+        // setenv("OLDPWD", Previous, ENV_OVERWRITE);
+        // setenv("PWD", dir, ENV_OVERWRITE);
         //free(prev);
     }
     else
@@ -135,3 +146,22 @@ void DoChange(char * dir)
 
     D_PRINTF("Leave: DoChange\n");
 }
+
+void cd_clear(void)
+{
+    if(Previous != NULL)
+    {
+        FREE(Previous);
+    }
+}
+
+void cd_init(void)
+{
+    Previous = getenv("OLDPWD");
+    if(Previous == NULL)
+    {
+        Previous = get_current_dir_name();
+    }
+}
+
+

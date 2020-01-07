@@ -16,6 +16,7 @@
 
 
 
+
 struct arg
 {
     char* s;
@@ -51,13 +52,17 @@ static bool dirty = false;
     // free(yytext);
 }
 ;|(>>)|<|>|\| { //Deliminer
-    I_PRINTF("Delim %s\n", yytext);
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
-    if(yytext == ">>")
+    if(strcmp(yytext,">>") == 0)
     {
+        D_PRINTF("Delim '2': %s\n", yytext);
         AddCmd('2');
     }
-    AddCmd(yytext[0]);
+    else
+    {
+        D_PRINTF("Delim '%c': %s\n", yytext[0], yytext);
+        AddCmd(yytext[0]);
+    }    
     // free(yytext);
 }
 \"((\\\")|[^"\n\r])+\" { //Basic keyword

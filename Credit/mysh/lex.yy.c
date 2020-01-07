@@ -475,6 +475,7 @@ char *yytext;
 
 
 
+
 struct arg
 {
     char* s;
@@ -497,8 +498,8 @@ static int cmdcount = 0;
 static bool dirty = false;
 
 
-#line 501 "lex.yy.c"
 #line 502 "lex.yy.c"
+#line 503 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -713,10 +714,10 @@ YY_DECL
 		}
 
 	{
-#line 43 "getcmd.c"
+#line 44 "getcmd.c"
 
 
-#line 720 "lex.yy.c"
+#line 721 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -775,7 +776,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 45 "getcmd.c"
+#line 46 "getcmd.c"
 { //Comment
     S_PRINTF("Comment: %s\n", yytext);
 
@@ -783,7 +784,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 49 "getcmd.c"
+#line 50 "getcmd.c"
 { 
     I_PRINTF("WhiteChars: /%s/\n", yytext);
     // free(yytext);
@@ -791,21 +792,25 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 53 "getcmd.c"
+#line 54 "getcmd.c"
 { //Deliminer
-    I_PRINTF("Delim %s\n", yytext);
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
-    if(yytext == ">>")
+    if(strcmp(yytext,">>") == 0)
     {
+        D_PRINTF("Delim '2': %s\n", yytext);
         AddCmd('2');
     }
-    AddCmd(yytext[0]);
+    else
+    {
+        D_PRINTF("Delim '%c': %s\n", yytext[0], yytext);
+        AddCmd(yytext[0]);
+    }    
     // free(yytext);
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 63 "getcmd.c"
+#line 68 "getcmd.c"
 { //Basic keyword
     // AddArg(yytext);
     S_PRINTF("\"MATCH\": %s\n", yytext);
@@ -820,7 +825,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 74 "getcmd.c"
+#line 79 "getcmd.c"
 { //Basic keyword
     AddArg(yytext);
     //"
@@ -829,7 +834,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 78 "getcmd.c"
+#line 83 "getcmd.c"
 { //End of entry
     S_PRINTF("NewLine\n");
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
@@ -842,7 +847,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 87 "getcmd.c"
+#line 92 "getcmd.c"
 { 
     E_PRINTF("Unknown character:'%s'\n", yytext);
     // free(yytext);
@@ -850,10 +855,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 91 "getcmd.c"
+#line 96 "getcmd.c"
 ECHO;
 	YY_BREAK
-#line 857 "lex.yy.c"
+#line 862 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1821,7 +1826,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 91 "getcmd.c"
+#line 96 "getcmd.c"
 
 
 command** GetCommands(char* Line, int*Count)

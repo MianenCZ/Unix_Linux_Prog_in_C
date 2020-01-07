@@ -25,12 +25,6 @@
 #include "myshval.h"
 #include "perr.h"
 
-// #include <stdio.h>
-// #include <sys/types.h>
-// #include <sys/stat.h>
-// #include <unistd.h>
-// #include <getopt.h>
-
 int main(int argc, char* const *argv)
 {
     E_PRINTF("stoop");
@@ -86,12 +80,16 @@ void run_script(char * file_name)
             exec_line(line);                
             FREE(line);
             if(myshval != 0)
+            {
+                cd_clear();
                 exit(myshval);
+            }
 
         }
         else
         {
             FREE(line);
+            cd_clear();
             exit(myshval);
         }
     }
@@ -119,6 +117,7 @@ void run_interactive()
         free(line);
         free(prompt);
     }
+    cd_clear();
 }
 
 //NO LEAK 16/12/29
@@ -158,7 +157,7 @@ char * get_prompt()
     }
     else
     {
-        snprintf(prompt, size, "%s%d%s %s%s $ %s", ANSI_COLOR_BRIGHT_RED, myshval, ANSI_COLOR_RESET, ANSI_COLOR_WHITE, dir, ANSI_COLOR_RESET);
+        snprintf(prompt, size, "%s%d%s %s%s $ %s", ANSI_COLOR_BRIGHT_RED, myshval, ANSI_COLOR_RESET, ANSI_COLOR_BRIGHT_WHITE, dir, ANSI_COLOR_RESET);
     }
     
     // FREE(dir);

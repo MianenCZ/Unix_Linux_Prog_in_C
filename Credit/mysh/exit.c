@@ -4,6 +4,7 @@
 #include "exit.h"
 #include "myshval.h"
 #include "perr.h"
+#include "cd.h"
 
 
 void RunEXIT(char ** args, int argc)
@@ -19,11 +20,13 @@ void RunEXIT(char ** args, int argc)
             if (exit_code == 0 && *(args + 1)[0] != '0')
             {
                 PERR("%s: exit: %s: numeric argument required", mysh, *(args + 1));
+                cd_clear();
                 exit(2);
             }
             else
             {
                 D_PRINTF("Exiting with code: %d\n", exit_code);
+                cd_clear();
                 exit(exit_code);
             }
         }
