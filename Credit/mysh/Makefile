@@ -18,15 +18,15 @@ r: release
 d: debug
 
 val: release
-	#valgrind --leak-check=full --show-leak-kinds=all $(OUT) $(TESTFILE)
-	valgrind --leak-check=full $(OUT) $(TESTFILE)
-	#valgrind --leak-check=full --show-leak-kinds=all $(OUT) -c "echo A;echo B;echo C\n"
+	-valgrind --leak-check=full --show-leak-kinds=all $(OUT) $(TESTFILE)
+	#valgrind --leak-check=full $(OUT) $(TESTFILE)
+	-valgrind --leak-check=full --show-leak-kinds=all $(OUT) -c "echo A;echo B;echo C\n"
 
 debug: clean $(DTARGETS)
-	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -l readline -o $(OUT) 
+	$(CC) $(CFLAGS) $(INCLUDES) $(TARGETS) -o $(OUT) -lfl -l readline
 
 release: clean $(TARGETS)
-	$(CC) $(CFLAGS) $(INCLUDES) -lfl $(TARGETS) -l readline -o $(OUT) 
+	$(CC) $(CFLAGS) $(INCLUDES) $(TARGETS) -o $(OUT) -lfl -l readline
 
 mysh.o: 
 	$(CC) $(CFLAGS) $(INCLUDES) -c mysh.c
