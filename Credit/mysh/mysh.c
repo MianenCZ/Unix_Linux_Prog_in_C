@@ -218,12 +218,15 @@ void run_command(command ** c, int Count)
 void handle_sig_in(int sig) 
 { 
     signal(SIGINT, handle_sig_in);   
+    myshval = 128 + sig; 
     D_PRINTF("IN PROMPT CTRL+C");
     printf("\n"); // Move to a new line
+    char* p = get_prompt();
+    rl_set_prompt(p);
+    free(p);
     rl_on_new_line(); // Regenerate the prompt on a newline
     rl_replace_line("", 0); // Clear the previous text
     rl_redisplay();
-    myshval = 128 + sig; 
 }
 
 void print_help(void)
