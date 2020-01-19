@@ -2,7 +2,7 @@
 .PHONY: clean cltest
 
 SHELL = /bin/sh
-CC = /usr/bin/gcc -ggdb3
+CC = /usr/bin/gcc
 CFLAGS = -std=c99 -Wall -Wextra -ggdb3
 INCLUDES = -I Includes
 OUT = ./mysh

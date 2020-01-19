@@ -37,13 +37,18 @@ int CallBin(char* const argv[])
   return 0;
 }
 
-
+static int killpid = 0;
 int AwaitChild(pid_t child_pid)
-{
+{  
   int status;
+  killpid = 0;
   while (0 == waitpid(child_pid , &status , WNOHANG)) 
   {
 
+  }
+  if(killpid == 1)
+  {
+    return myshval;
   }
   int exit_val = WEXITSTATUS(status);
   D_PRINTF("Child exited with %d\n", exit_val);
@@ -53,6 +58,7 @@ int AwaitChild(pid_t child_pid)
 void handle_sigint(int sig) 
 { 
   D_PRINTF("handle SIGINT\n");
-  kill(my_pid, SIGINT);
+  killpid = 1;
   myshval = 128 + sig;
+  kill(my_pid, SIGINT);
 }
