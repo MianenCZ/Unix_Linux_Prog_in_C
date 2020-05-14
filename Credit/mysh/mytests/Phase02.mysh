@@ -1,0 +1,162 @@
+echo X
+echo X;
+/bin/ls test-003.mysh
+ls test-003.mysh
+echo X; echo Y
+echo X; echo Y;
+echo A; echo B; echo C;
+echo D; echo E; echo F;
+echo G; echo H; echo I;
+echo J; echo K; echo L;
+echo M; echo N; echo O;
+echo A B C; echo Y; # Comment
+# The next line contains only spaces.
+
+echo X | cat | cat | cat | sort
+cd /tmp
+pwd
+cd /tmp
+pwd
+cd /etc
+pwd
+cd -
+pwd
+date | cat | sort | wc -l
+date | cat | sort | wc -l; uname -a | wc -l; echo X
+rm -f out2
+touch out2
+echo hello world >out2 >out
+cat out
+cat out2
+rm -f out out2
+echo A B C > out
+echo X Y Z >> out
+cat out
+rm -f out
+# this just prints out "hello world", with prefixed redirection.
+echo hello world > output
+<    output cat
+echo HELLO WORLD > input
+<input >output cat
+cat output
+rm -f input output
+rm -f output
+echo HELLO WORLD > input
+<input >>output cat
+cat output
+rm -f input output
+echo XXX | cat | cat | cat | cat | cat | cat | cat | sort | sort | uniq | uniq | cat | cat | cat | cat
+;;
+cd one two
+date | | cat
+date >>> output
+rm -f output4
+echo X > output | echo Y > output2 | echo Z >output3
+cat output >> output4
+cat output2 >> output4
+cat output3 >> output4
+cat <output4
+rm -f output output2 output3 output4
+echo X | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat | cat
+rm -f output
+echo HELLO WORLD > input
+cat <input >>output
+cat output
+rm -f input output
+echo HELLO WORLD > input
+cat <input >output
+cat output
+rm -f input output
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+
+# Comment
+

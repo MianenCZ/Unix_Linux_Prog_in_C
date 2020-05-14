@@ -17,13 +17,13 @@
 #include "callbin.h"
 #include "getcmd.h"
 #include "debug.h"
-#include "execcmd.h"
 #include "memory.h"
 #include "cd.h"
 #include "colorout.h"
 #include "fd_getline.h"
 #include "myshval.h"
 #include "perr.h"
+#include "exec_pipeline.h"
 
 int main(int argc, char* const *argv)
 {
@@ -78,7 +78,7 @@ void run_script(char * file_name)
         if(fd_get_line(fd, &line, &n) != EOF)
         {
             exec_line(line);                
-            FREE(line);
+            FREE_S(line);
             if(myshval != 0)
             {
                 cd_clear();
@@ -88,7 +88,7 @@ void run_script(char * file_name)
         }
         else
         {
-            FREE(line);
+            FREE_S(line);
             cd_clear();
             exit(myshval);
         }
@@ -124,21 +124,25 @@ void run_interactive()
 void exec_line(char * line)
 {
     int command_count = 0;
-    command ** c = GetCommands(line, &command_count);        
-    run_command(c, command_count);
+    command ** c = GetCommands(line, &command_count);   
+    if(myshval == 0) 
+        exec_pipeline(c, command_count);
     //free c
     for (int i = 0; i < command_count; i++)
     {
         command * act = *(c+i);
-        //free args
+        // free args
         for (int j = 0; j < act->arg_count + 1; j++)
         {
-            free(*(act->args + j));
+            FREE_S(*(act->args + j));
         }
-        free(act->args);        
-        free(act);
+        FREE_S(act->args);   
+        FREE_S(act->input_file);   
+        FREE_S(act->append_file);   
+        FREE_S(act->rewrite_file);   
+        FREE_S(act);
     }
-    free(c);    
+    FREE_S(c);    
 }
 
 char * get_prompt()
@@ -160,58 +164,9 @@ char * get_prompt()
         snprintf(prompt, size, "%s%d%s %s%s $ %s", ANSI_COLOR_BRIGHT_RED, myshval, ANSI_COLOR_RESET, ANSI_COLOR_BRIGHT_WHITE, dir, ANSI_COLOR_RESET);
     }
     
-    // FREE(dir);
-    
+    // FREE(dir);    
     D_PRINTF("LEAVE get_prompt() with result \"%s\"\n", prompt);
     return prompt; 
-
-}
-
-void run_command(command ** c, int Count)
-{
-    D_PRINTF("Run comand Line: Count = %d\n", Count);
-    for (int i = 0; i < Count; i++)
-    {
-        //TODO: on non';' delimeter reaction
-        if(*(*(c + i))->args == NULL || ((*(c + i))->delim != ';' && (*(c + i))->delim != '\n' ))
-        {
-            E_PRINTF("NULL DELIM: %c\n", (*(c + i))->delim);
-            if((*(c + i))->delim == ';')
-            {
-                if(i + 1 == Count)
-                {
-                    //This is Last one
-                    break;
-                }
-                else
-                {                    
-                    PERR("%s: syntax error nearby %c\n", mysh, (*(c + i))->delim);
-                    myshval = 2;
-                    return;
-                } 
-            }
-            else
-            {
-                PERR("%s: syntax error nearby %c\n", mysh, (*(c + i))->delim);
-                myshval = 2;
-                return;
-            }
-
-
-
-            E_PRINTF("*(*(c + i))->args == NULL\n");
-            continue;
-            // exit(142);
-        }
-
-        // E_PRINTF("True command **> i = %zu\n", i);
-        // E_PRINTF("*(c + i + 1) != NULL ---> %s\n", (*(c + i + 1) != NULL)?"TRUE":"FALSE");
-        if(ExecCommand(*(c+i)) == -1)
-        {
-            PERR("%s: %s: command not found \n", mysh, *(*(c + i))->args);
-        }
-        //TODO: FreeCommand
-    }    
 
 }
 

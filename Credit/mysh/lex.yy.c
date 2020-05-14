@@ -354,8 +354,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 8
-#define YY_END_OF_BUFFER 9
+#define YY_NUM_RULES 11
+#define YY_END_OF_BUFFER 12
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -363,11 +363,10 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static const flex_int16_t yy_accept[22] =
+static const flex_int16_t yy_accept[19] =
     {   0,
-        0,    0,    9,    5,    2,    6,    7,    7,    1,    3,
-        3,    5,    2,    0,    0,    1,    1,    3,    4,    4,
-        0
+        0,    0,   12,    6,    2,    7,   10,    1,    8,    5,
+        4,    9,    6,    2,    1,    1,    3,    0
     } ;
 
 static const YY_CHAR yy_ec[256] =
@@ -375,17 +374,17 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    4,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    5,    1,    6,    7,    1,    1,    1,    1,    1,
+        1,    5,    1,    4,    6,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    8,    9,
-        1,   10,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    7,    8,
+        1,    9,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,   11,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
 
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,   12,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,   10,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -402,46 +401,37 @@ static const YY_CHAR yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static const YY_CHAR yy_meta[13] =
+static const YY_CHAR yy_meta[11] =
     {   0,
-        1,    2,    3,    4,    2,    4,    1,    2,    2,    2,
-        1,    2
+        1,    2,    3,    2,    2,    1,    2,    2,    2,    2
     } ;
 
-static const flex_int16_t yy_base[25] =
+static const flex_int16_t yy_base[21] =
     {   0,
-        0,    0,   20,    0,   11,   51,   51,    8,   16,   51,
-        8,    0,    0,   22,    9,   33,    0,   51,   51,    0,
-       51,   13,   44,   46
+        0,    0,   16,    0,    9,   29,   29,   14,   29,   29,
+        4,   29,    0,    0,   20,    0,   29,   29,   11,   26
     } ;
 
-static const flex_int16_t yy_def[25] =
+static const flex_int16_t yy_def[21] =
     {   0,
-       21,    1,   21,   22,   21,   21,   21,   23,   24,   21,
-       21,   22,    5,   23,   14,   24,   24,   21,   21,   14,
-        0,   21,   21,   21
+       18,    1,   18,   19,   18,   18,   18,   20,   18,   18,
+       18,   18,   19,    5,   20,   20,   18,    0,   18,   18
     } ;
 
-static const flex_int16_t yy_nxt[64] =
+static const flex_int16_t yy_nxt[40] =
     {   0,
-        4,    5,    6,    7,    5,    8,    9,   10,   10,   11,
-        4,   10,   13,   12,   20,   13,   16,   18,   15,   21,
-       21,   21,   16,   21,   21,   21,   16,   19,   21,   21,
-       21,   21,   15,   16,   21,   21,   21,   21,   21,   16,
-       21,   21,   21,   16,   14,   14,   17,   17,   21,   17,
-        3,   21,   21,   21,   21,   21,   21,   21,   21,   21,
-       21,   21,   21
+        4,    5,    6,    7,    5,    8,    9,   10,   11,   12,
+       14,   13,   17,   14,   15,   18,   18,   18,   18,   15,
+       15,   18,   18,   18,   18,   15,   16,   16,    3,   18,
+       18,   18,   18,   18,   18,   18,   18,   18,   18
     } ;
 
-static const flex_int16_t yy_chk[64] =
+static const flex_int16_t yy_chk[40] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    5,   22,   15,    5,    9,   11,    8,    3,
-        0,    0,    9,    0,    0,    0,    9,   14,    0,    0,
-        0,    0,   14,   16,    0,    0,    0,    0,    0,   16,
-        0,    0,    0,   16,   23,   23,   24,   24,    0,   24,
-       21,   21,   21,   21,   21,   21,   21,   21,   21,   21,
-       21,   21,   21
+        5,   19,   11,    5,    8,    3,    0,    0,    0,    8,
+       15,    0,    0,    0,    0,   15,   20,   20,   18,   18,
+       18,   18,   18,   18,   18,   18,   18,   18,   18
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -458,12 +448,13 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "getcmd.c"
+#line 1 "getcmd.l"
 /* Predefines */
 #define YY_NO_INPUT 1
-#line 6 "getcmd.c"
+#line 6 "getcmd.l"
 
 #include <stdlib.h>
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <sys/queue.h>
 #include <string.h>
@@ -472,9 +463,8 @@ char *yytext;
 #include "types.h"
 #include "memory.h"
 #include "debug.h"
-
-
-
+#include "myshval.h"
+#include "perr.h"
 
 struct arg
 {
@@ -497,9 +487,13 @@ static int argcount = 0;
 static int cmdcount = 0;
 static bool dirty = false;
 
+static char* input_file = NULL;
+static char* append_file = NULL;
+static char* rewrite_file = NULL;
+static int redirect_state = 0;
 
-#line 502 "lex.yy.c"
-#line 503 "lex.yy.c"
+#line 496 "lex.yy.c"
+#line 497 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -714,10 +708,10 @@ YY_DECL
 		}
 
 	{
-#line 44 "getcmd.c"
+#line 48 "getcmd.l"
 
 
-#line 721 "lex.yy.c"
+#line 715 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -744,13 +738,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 22 )
+				if ( yy_current_state >= 19 )
 					yy_c = yy_meta[yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 51 );
+		while ( yy_base[yy_current_state] != 29 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -776,89 +770,127 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 46 "getcmd.c"
+#line 50 "getcmd.l"
 { //Comment
     S_PRINTF("Comment: %s\n", yytext);
-
 }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 50 "getcmd.c"
+#line 54 "getcmd.l"
 { 
     I_PRINTF("WhiteChars: /%s/\n", yytext);
-    // free(yytext);
 }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 54 "getcmd.c"
+#line 58 "getcmd.l"
 { //Deliminer
-    S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
-    if(strcmp(yytext,">>") == 0)
+    if(redirect_state != 0)
     {
-        D_PRINTF("Delim '2': %s\n", yytext);
-        AddCmd('2');
+        myshval = redirect_state;
+        PERR("%s: syntax error nearby >>;\n", mysh); 
     }
-    else
-    {
-        D_PRINTF("Delim '%c': %s\n", yytext[0], yytext);
-        AddCmd(yytext[0]);
-    }    
-    // free(yytext);
+    redirect_state = 2;
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 68 "getcmd.c"
-{ //Basic keyword
-    // AddArg(yytext);
-    S_PRINTF("\"MATCH\": %s\n", yytext);
-    char * text = NULL;
-    MALLOC(text, (sizeof(yytext) - 2));
-    strncpy(text, (yytext + 1), sizeof(yytext) - 2);
-    S_PRINTF("MATCH: %s\n", text);
-    AddArg(text);
-    free(text);
-    // free(yytext);
+#line 67 "getcmd.l"
+{ //Deliminer
+    if(redirect_state != 0)
+    {
+        myshval = redirect_state;
+        PERR("%s: syntax error nearby >;\n", mysh); 
+    }
+    redirect_state = 3;
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 79 "getcmd.c"
-{ //Basic keyword
-    AddArg(yytext);
-    //"
+#line 76 "getcmd.l"
+{ //Deliminer
+    if(redirect_state != 0)
+    {
+        myshval = redirect_state;        
+        PERR("%s: syntax error nearby <;\n", mysh); 
+    }
+    redirect_state = 1;
 }
 	YY_BREAK
 case 6:
-/* rule 6 can match eol */
 YY_RULE_SETUP
-#line 83 "getcmd.c"
+#line 85 "getcmd.l"
+{ //Basic keyword
+    S_PRINTF("\"MATCH\": \"%s\"\n", yytext);
+    char * text = NULL;
+    CALLOC(text, strlen(yytext));
+    strncpy(text, (yytext), strlen(yytext));    
+    switch (redirect_state)
+    {
+        case 0:
+            S_PRINTF("keyword: %s\n", text);
+            AddArg(text);
+            FREE_S(text);
+            break;
+        case 1: //in state
+            S_PRINTF("in from %s\n", text);
+            input_file = text;
+            break;
+        case 2: //append state
+            S_PRINTF("append into %s\n", text);
+            append_file = text;
+            break;            
+        case 3: //rewrite state
+            S_PRINTF("rewrite %s\n", text);
+            rewrite_file = text;
+            break;   
+    }
+    redirect_state = 0;  
+}
+	YY_BREAK
+case 7:
+/* rule 7 can match eol */
+YY_RULE_SETUP
+#line 113 "getcmd.l"
 { //End of entry
     S_PRINTF("NewLine\n");
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
     if(dirty)
     {
-        AddCmd('\n');
+        AddCmd(DELIM_NEWLINE); //Add first character
     }
-    // free(yytext);
-}
-	YY_BREAK
-case 7:
-YY_RULE_SETUP
-#line 92 "getcmd.c"
-{ 
-    E_PRINTF("Unknown character:'%s'\n", yytext);
     // free(yytext);
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 96 "getcmd.c"
+#line 123 "getcmd.l"
+{ //End of entry
+    AddCmd(DELIM_COMMA);
+}
+	YY_BREAK
+case 9:
+YY_RULE_SETUP
+#line 127 "getcmd.l"
+{ //End of entry
+    AddCmd(DELIM_PIPE);
+}
+	YY_BREAK
+case 10:
+YY_RULE_SETUP
+#line 131 "getcmd.l"
+{ 
+    E_PRINTF("Unknown character:'%s'\n", yytext);
+    myshval = -1;
+}
+	YY_BREAK
+case 11:
+YY_RULE_SETUP
+#line 136 "getcmd.l"
 ECHO;
 	YY_BREAK
-#line 862 "lex.yy.c"
+#line 894 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1155,7 +1187,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 22 )
+			if ( yy_current_state >= 19 )
 				yy_c = yy_meta[yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
@@ -1183,11 +1215,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 22 )
+		if ( yy_current_state >= 19 )
 			yy_c = yy_meta[yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + yy_c];
-	yy_is_jam = (yy_current_state == 21);
+	yy_is_jam = (yy_current_state == 18);
 
 		return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1826,7 +1858,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 96 "getcmd.c"
+#line 136 "getcmd.l"
 
 
 command** GetCommands(char* Line, int*Count)
@@ -1844,12 +1876,12 @@ command** GetCommands(char* Line, int*Count)
     D_PRINTF("after yylex(); DIRTY: %s\n", (dirty)?"TRUE":"FALSE");
     if(dirty)
     {
-        AddCmd('\n');
+        AddCmd(DELIM_NEWLINE);
     }
     return GetCMD(Count);
 }
 
-void AddCmd(char delim)
+void AddCmd(int delim)
 {   
     char** arg_vals = NULL;
     MALLOC(arg_vals, argcount + 1);
@@ -1870,19 +1902,27 @@ void AddCmd(char delim)
     {
         e = TAILQ_FIRST(&args);
         TAILQ_REMOVE(&args, e, nextarg);
-        FREE(e);
+        FREE_S(e);
     }
 
     command* c = NULL;
-    MALLOC(c,1);
+    CALLOC(c,1);
     c->args = arg_vals;
     c->delim = delim;
     c->arg_count = argcount;
+    c->input_file = input_file;
+    c->append_file = append_file;
+    c->rewrite_file = rewrite_file;
 
     struct cmd* cm = NULL;
     MALLOC(cm,1);
     cm->value = c;
     TAILQ_INSERT_TAIL(&cmds, cm, nextcmd);
+
+    input_file = NULL;
+    append_file = NULL;
+    rewrite_file = NULL;
+    redirect_state = 0;
 
 
     argcount = 0;

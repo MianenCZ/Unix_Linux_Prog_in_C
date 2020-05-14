@@ -41,11 +41,13 @@ do \
 } \
 while(0)
 
-#define FREE(p) \
+#define FREE_S(p) \
 do \
 { \
+  if(p != NULL) {\
   free(p); \
   p = NULL; \
+  }\
 } \
 while(0)
 

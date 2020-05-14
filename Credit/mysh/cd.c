@@ -108,8 +108,8 @@ void ChangeDir(char * dir)
         strncat(new, (dir + 1), strlen(dir) - 1);
         S_PRINTF("Cd to: %s\n", new);
         DoChange(new);
-        FREE(new);
-        FREE(home);
+        FREE_S(new);
+        FREE_S(home);
     }
     else
     {
@@ -129,7 +129,7 @@ void DoChange(char * dir)
     {
         if(Previous != NULL)
         {
-            FREE(Previous);
+            FREE_S(Previous);
         }
         Previous = prev;
         // setenv("OLDPWD", Previous, ENV_OVERWRITE);
@@ -140,7 +140,7 @@ void DoChange(char * dir)
     {
         PERR("%s: cd: %s: %s\n", mysh, dir, strerror(errno));
         myshval = 1;
-        free(prev);
+        FREE_S(prev);
     }
     // 
 
@@ -151,7 +151,7 @@ void cd_clear(void)
 {
     if(Previous != NULL)
     {
-        FREE(Previous);
+        FREE_S(Previous);
     }
 }
 

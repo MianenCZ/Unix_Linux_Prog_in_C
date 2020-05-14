@@ -3,7 +3,7 @@
 #include "types.h"
 
 command** GetCommands(char* Line, int* Count);
-void AddCmd(char delim);
+void AddCmd(int delim);
 void AddArg(char * text);
 command** GetCMD(int*Count);
 
