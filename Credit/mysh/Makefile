@@ -6,8 +6,8 @@ CC = /usr/bin/gcc
 CFLAGS = -std=c99 -Wall -Wextra -ggdb3
 INCLUDES = -I Includes
 OUT = ./mysh
-TARGETS = callbin.o mysh.o getcmd.o cd.o fd_getline.o myshval.o exit.o exec_pipeline.o
-DTARGETS = D_callbin.o D_mysh.o D_getcmd.o D_cd.o D_exec_pipeline.o fd_getline.o myshval.o exit.o
+TARGETS = mysh.o getcmd.o utils.o fd_getline.o myshval.o exec_pipeline.o
+DTARGETS = D_mysh.o D_getcmd.o D_exec_pipeline.o D_utils.o fd_getline.o myshval.o
 DFLAGS = -D DEBUG
 TESTFILE = mytests/Phase01.mysh
 
@@ -39,32 +39,29 @@ getcmd.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c lex.yy.c -o getcmd.o
 
 
-cd.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -c cd.c
+utils.o:
+	$(CC) $(CFLAGS) $(INCLUDES) -c utils.c
 fd_getline.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c fd_getline.c
 
 myshval.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c myshval.c
 
-exit.o:
-	$(CC) $(CFLAGS) $(INCLUDES) -c exit.c
+
 exec_pipeline.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c exec_pipeline.c
 
 D_mysh.o: 
 	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c mysh.c
 
-D_callbin.o:
-	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c callbin.c
 
 D_getcmd.o:
 	flex getcmd.l
 	$(CC) $(CFLAGS) $(DFLAGS) $(INCLUDES) -c lex.yy.c -o getcmd.o
 
 
-D_cd.o:
-	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c cd.c
+D_utils.o:
+	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c utils.c
 D_exec_pipeline.o:
 	$(CC) $(DFLAGS) $(CFLAGS) $(INCLUDES) -c exec_pipeline.c
 

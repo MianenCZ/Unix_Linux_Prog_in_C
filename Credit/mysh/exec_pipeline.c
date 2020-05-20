@@ -14,8 +14,7 @@
 #include "debug.h"
 #include "myshval.h"
 #include "perr.h"
-#include "cd.h"
-#include "exit.h"
+#include "utils.h"
 #include "memory.h"
 
 #define WRITE_END 1
@@ -73,7 +72,7 @@ void exec_pipeline(command ** coms, int coms_count)
         {
             if(pipe_size == 0 && (cur->delim == DELIM_NEWLINE || cur->delim == DELIM_COMMA))
             {
-                RunEXIT(cur->args, cur->arg_count); 
+                exec_exit(cur->args, cur->arg_count); 
             }
             else
             {
@@ -84,7 +83,7 @@ void exec_pipeline(command ** coms, int coms_count)
         {
             if(pipe_size == 0 && (cur->delim == DELIM_NEWLINE || cur->delim == DELIM_COMMA))
             {
-                RunCD(cur->args, cur->arg_count);    
+                exec_cd(cur->args, cur->arg_count);    
                 continue;
             }
             else
@@ -180,5 +179,4 @@ void exec_pipeline(command ** coms, int coms_count)
         }
     }
     FREE_S(pids);   
-    
 }

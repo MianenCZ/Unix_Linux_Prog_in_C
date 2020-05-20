@@ -14,11 +14,10 @@
 
 #include "types.h"
 #include "mysh.h"
-#include "callbin.h"
 #include "getcmd.h"
 #include "debug.h"
 #include "memory.h"
-#include "cd.h"
+#include "utils.h"
 #include "colorout.h"
 #include "fd_getline.h"
 #include "myshval.h"
@@ -27,8 +26,6 @@
 
 int main(int argc, char* const *argv)
 {
-    E_PRINTF("stoop");
-
     mysh = *argv;
     int opt; 
     while((opt = getopt(argc, argv, ":hc:")) != -1)  
@@ -36,7 +33,6 @@ int main(int argc, char* const *argv)
         switch(opt)  
         {  
             case 'c':
-                D_PRINTF("c cmd: %s\n", optarg);
                 exec_line(optarg);
                 return myshval; 
             case '?':  
@@ -50,9 +46,7 @@ int main(int argc, char* const *argv)
                 PERR("%s: -%c: option requires an argument\n", mysh, optopt);  
                 break; 
         }  
-    }  
-
-
+    }
     if(optind < argc)
     {
         run_script(argv[optind]);
@@ -64,6 +58,7 @@ int main(int argc, char* const *argv)
 
 void run_script(char * file_name)
 {
+    cd_init();
     D_PRINTF("Non-option argument %s\n", file_name);
     int fd = open(file_name, O_RDONLY);
     if(fd == -1)
@@ -98,6 +93,7 @@ void run_script(char * file_name)
 
 void run_interactive()
 {
+    cd_init();
     while(1)
     {     
         signal(SIGINT, handle_sig_in);    
@@ -120,11 +116,10 @@ void run_interactive()
     cd_clear();
 }
 
-//NO LEAK 16/12/29
 void exec_line(char * line)
 {
     int command_count = 0;
-    command ** c = GetCommands(line, &command_count);   
+    command ** c = parse_line(line, &command_count);   
     if(myshval == 0) 
         exec_pipeline(c, command_count);
     //free c
@@ -145,12 +140,11 @@ void exec_line(char * line)
     FREE_S(c);    
 }
 
-char * get_prompt()
+char* get_prompt()
 {
     D_PRINTF("ENTER get_prompt()\n");
     char * prompt = NULL;
-    char * dir = GetCurrentDir();
-    
+    char * dir = get_current_dir();   
     
     size_t size = strlen(dir) + 100;
     CALLOC(prompt, size);

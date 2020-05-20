@@ -91,7 +91,7 @@ static int redirect_state = 0;
     {
         case 0:
             S_PRINTF("keyword: %s\n", text);
-            AddArg(text);
+            add_arg(text);
             FREE_S(text);
             break;
         case 1: //in state
@@ -115,17 +115,17 @@ static int redirect_state = 0;
     S_PRINTF("Dirty = %s\n", (dirty)?"TRUE":"FALSE");
     if(dirty)
     {
-        AddCmd(DELIM_NEWLINE); //Add first character
+        build_cmd(DELIM_NEWLINE); //Add first character
     }
     // free(yytext);
 }
 
 ; { //End of entry
-    AddCmd(DELIM_COMMA);
+    build_cmd(DELIM_COMMA);
 }
 
 \| { //End of entry
-    AddCmd(DELIM_PIPE);
+    build_cmd(DELIM_PIPE);
 }
 
 . { 
@@ -135,9 +135,9 @@ static int redirect_state = 0;
 
 %%
 
-command** GetCommands(char* Line, int*Count)
+command** parse_line(char* Line, int*Count)
 {
-    S_PRINTF("GetCommands(%s)\n", Line);
+    S_PRINTF("parse_line(%s)\n", Line);
     // Initialize the args before use
     TAILQ_INIT(&args);
     TAILQ_INIT(&cmds);
@@ -150,12 +150,12 @@ command** GetCommands(char* Line, int*Count)
     D_PRINTF("after yylex(); DIRTY: %s\n", (dirty)?"TRUE":"FALSE");
     if(dirty)
     {
-        AddCmd(DELIM_NEWLINE);
+        build_cmd(DELIM_NEWLINE);
     }
-    return GetCMD(Count);
+    return end_parse(Count);
 }
 
-void AddCmd(int delim)
+void build_cmd(int delim)
 {   
     char** arg_vals = NULL;
     MALLOC(arg_vals, argcount + 1);
@@ -204,7 +204,7 @@ void AddCmd(int delim)
     cmdcount++;
 }
 
-void AddArg(char * text)
+void add_arg(char * text)
 {
     dirty = true;
     struct arg * e = NULL;
@@ -224,7 +224,7 @@ void AddArg(char * text)
 
 }
 
-command** GetCMD(int*Count)
+command** end_parse(int*Count)
 {
     *Count = cmdcount;
     command ** result = NULL;
@@ -250,5 +250,4 @@ command** GetCMD(int*Count)
     }
     cmdcount = 0;
     return result;
-
 }

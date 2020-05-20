@@ -34,7 +34,6 @@ int fd_get_line(const int fd, char **lineptr, ssize_t *n)
         *n = BUFF_SIZE;
     }
 
-
     char c;
     int pos = 0;
     while(1)
@@ -57,42 +56,3 @@ int fd_get_line(const int fd, char **lineptr, ssize_t *n)
         }        
     }
 }
-
-#ifdef TEST
- #include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <stdio.h>
-
-int main(int argc, char const *argv[])
-{
-    if(argc != 2)
-    {
-        printf("Test USAGE: %s filename", *argv);
-        return 1;
-    }
-
-    int fd = open(argv[1], O_RDONLY);
-    while(1)
-    {
-        ssize_t n = 0;
-        char * line = NULL;
-        if(fd_get_line(fd, &line, &n) != EOF)
-        {
-            printf("%s\n", line);
-            free(line);
-        }
-        else
-        {
-            free(line);
-            break;
-        }
-        
-    
-    }
-
-    return 0;
-}
-
-
-#endif
