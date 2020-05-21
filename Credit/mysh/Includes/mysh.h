@@ -4,7 +4,7 @@
 #include "types.h"
 int ExecCommand(command * c);
 void exec_line(char * line);
-void handle_sig_in(int signo, siginfo_t *sinfo, void *context);
+void handle_sig_in(int signo);
 char * get_prompt();
 void print_help(void);
 void run_interactive(void);

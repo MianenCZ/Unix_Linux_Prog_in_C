@@ -136,6 +136,7 @@ void exec_line(char * line)
     command ** c = parse_line(line, &command_count);   
     if(myshval == 0) 
         exec_pipeline(c, command_count);
+    
     //free c
     for (int i = 0; i < command_count; i++)
     {
@@ -178,7 +179,8 @@ char* get_prompt()
 
 }
 
-void handle_sig_in(int signo, siginfo_t *sinfo, void *context) 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+void handle_sig_in(int signo) 
 { 
     D_PRINTF("handle_sig_in\n");
     myshval = 128 + signo; 

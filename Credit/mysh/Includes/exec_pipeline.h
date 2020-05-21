@@ -4,6 +4,6 @@
 #include "types.h"
 void exec_pipeline(command ** c, int Count);
 
-void handle_sig_kill_childrens(int signo, siginfo_t *sinfo, void *context);
+void handle_sig_kill_childrens(int signo);
 
 #endif
