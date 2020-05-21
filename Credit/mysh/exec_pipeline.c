@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -8,6 +9,9 @@
 #include <signal.h>
 #include <errno.h>
 #include <string.h>
+
+#include <signal.h>
+#include <sys/wait.h>
 
 #include "exec_pipeline.h"
 #include "types.h"
@@ -24,6 +28,20 @@ pid_t* pids = NULL;
 
 void exec_pipeline(command ** coms, int coms_count)
 {
+    E_PRINTF("I AM HERE\n");
+
+
+    struct sigaction act = {0};
+    memset(&act, 0, sizeof(struct sigaction));
+    sigemptyset(&act.sa_mask);
+    act.sa_handler = handle_sig_kill_childrens;
+    act.sa_flags = SA_RESETHAND;
+    if (-1 == sigaction(SIGINT, &act, NULL))
+    {
+        perror("sigaction()");
+        exit(EXIT_FAILURE);
+    }
+
     CALLOC(pids, coms_count);
 
     for (int i = 0; i < coms_count; i++)
@@ -179,4 +197,10 @@ void exec_pipeline(command ** coms, int coms_count)
         }
     }
     FREE_S(pids);   
+}
+
+
+void handle_sig_kill_childrens(int signo, siginfo_t *sinfo, void *context)
+{
+    D_PRINTF("handle_sig_kill_childrens\n");
 }

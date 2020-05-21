@@ -11,6 +11,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include <sys/wait.h>
 
 #include "types.h"
 #include "mysh.h"
@@ -23,6 +24,8 @@
 #include "myshval.h"
 #include "perr.h"
 #include "exec_pipeline.h"
+
+struct sigaction act = {0};
 
 int main(int argc, char* const *argv)
 {
@@ -96,11 +99,22 @@ void run_interactive()
     cd_init();
     while(1)
     {     
-        signal(SIGINT, handle_sig_in);    
+        struct sigaction act = {0};
+        // memset(&act, 0, sizeof(struct sigaction));
+        sigemptyset(&act.sa_mask);
+        act.sa_handler = handle_sig_in;
+        // act.sa_flags = SA_RESETHAND;
+        if (-1 == sigaction(SIGINT, &act, NULL))
+        {
+            perror("sigaction()");
+            exit(EXIT_FAILURE);
+        }
+
         char * line = NULL;
         S_PRINTF("%s/n", line);
         char * prompt = get_prompt();
         line = readline(prompt);
+        I_PRINTF("readline red\n");
         S_PRINTF("%s/n", line);
         if(line == NULL)
         {
@@ -109,7 +123,6 @@ void run_interactive()
         }                        
         add_history(line);
         exec_line(line);   
-        signal(SIGINT, handle_sig_in);
         free(line);
         free(prompt);
     }
@@ -119,6 +132,7 @@ void run_interactive()
 void exec_line(char * line)
 {
     int command_count = 0;
+    myshval = 0;
     command ** c = parse_line(line, &command_count);   
     if(myshval == 0) 
         exec_pipeline(c, command_count);
@@ -164,18 +178,17 @@ char* get_prompt()
 
 }
 
-void handle_sig_in(int sig) 
+void handle_sig_in(int signo, siginfo_t *sinfo, void *context) 
 { 
-    signal(SIGINT, handle_sig_in);   
-    myshval = 128 + sig; 
-    D_PRINTF("IN PROMPT CTRL+C");
+    D_PRINTF("handle_sig_in\n");
+    myshval = 128 + signo; 
     printf("\n"); // Move to a new line
     char* p = get_prompt();
     rl_set_prompt(p);
     free(p);
     rl_on_new_line(); // Regenerate the prompt on a newline
-    rl_replace_line("", 0); // Clear the previous text
-    rl_redisplay();
+    // rl_replace_line("", 0); // Clear the previous text
+    rl_redisplay();    
 }
 
 void print_help(void)
