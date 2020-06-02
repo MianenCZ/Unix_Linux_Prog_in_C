@@ -77,11 +77,11 @@ void run_script(char * file_name)
         {
             exec_line(line);                
             FREE_S(line);
-            if(myshval != 0)
-            {
-                cd_clear();
-                exit(myshval);
-            }
+            // if(myshval != 0)
+            // {
+            //     cd_clear();
+            //     exit(myshval);
+            // }
 
         }
         else

@@ -8,10 +8,12 @@ source ./test-config
 
 # You can overwrite variables set in ./test-config here so that you don't need
 # to fix them every time you sync with the STEF repo.
-[[ -f $LOCAL_CONFIG ]] && source $LOCAL_CONFIG
+[[ -f $LOCAL_CONFIG ]] && source "$LOCAL_CONFIG"
 
 for v in $REQ_EXECUTABLES; do
 	value=$( eval echo \$$v )
+	value=$( eval echo $value )
+	export $v=$value
 
 	if [[ -z "$value" ]]; then
 	    echo "Variable $v must be defined.  Exiting."
@@ -23,5 +25,7 @@ for v in $REQ_EXECUTABLES; do
 	    exit 1
 	fi
 done
+
+echo "Running with $MYSH"
 
 $STEF $*

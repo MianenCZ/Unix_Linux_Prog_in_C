@@ -33,14 +33,26 @@ void exec_cd(char ** args, int argc)
     }
     else if(argc == 2 && strncmp(*(args + 1), "-", 1) == 0)
     {
+        if(Previous == NULL)
+        {            
+            PERR("%s: cd: OLDPWD not set\n", mysh);
+            myshval = 1;
+            return;
+        }
         char * target = strdup(Previous);
         change_dir(target);
         printf("%s\n", Current);
     }
     else if(argc == 1)
     {
-        char * home = strdup(getenv("HOME"));
-        change_dir(home);
+        char * home = getenv("HOME");
+        if(home == NULL)
+        {            
+            PERR("%s: cd: HOME not set\n", mysh);
+            myshval = 1;
+            return;
+        }
+        change_dir(strdup(home));
     }
     else
     {
@@ -60,6 +72,8 @@ void change_dir(char * dir)
     if(*dir == '~')
     {
         target = fromTilde(dir);
+        if(target == NULL)
+            return;
     }
     else
     {
@@ -100,9 +114,10 @@ void cd_init(void)
         myshval = 10;
         return;
     }
-    Previous = strdup(getenv("OLDPWD"));
-    if(Previous == NULL)
-        Previous = strdup(Current);
+    Previous = NULL;
+    char * oldpwd = getenv("OLDPWD");
+    if(oldpwd != NULL)
+        Previous = strdup(oldpwd);  
     CurrentTilde = toTilde(Current);
 }
 
@@ -111,7 +126,13 @@ char * fromTilde(char * path)
     if(*path == '~')
     {
         char * new;
-        char * home = getenv("HOME");        
+        char * home = getenv("HOME");
+        if(home == NULL)
+        {            
+            PERR("%s: cd: HOME not set\n", mysh);
+            myshval = 1;
+            return NULL;
+        }        
         CALLOC(new, strlen(home) + strlen(path));
         strcpy(new, home);
         strncat(new, (path + 1), strlen(path) - 1);
